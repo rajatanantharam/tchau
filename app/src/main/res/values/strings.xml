@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">LisboApp</string>
+    <string name="create_event">Create event</string>
 </resources>
