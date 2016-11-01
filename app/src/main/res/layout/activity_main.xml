@@ -3,13 +3,6 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-
-    <ListView
-        android:id="@+id/eventList"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-
     <Button
         android:layout_alignParentBottom="true"
         android:text="@string/create_event"
