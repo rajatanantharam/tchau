@@ -6,23 +6,25 @@ package app.lisboa.lisboapp.model;
 
 public class Event {
 
-    public String eventName;
     public String hostName;
-    public Double latitude;
+    public String eventName;
     public String locationName;
+    public Double latitude;
     public Double longitude;
-    public String timeStamp;
+    public long startTime;
+    public int durationInMinutes;
 
     public Event(){
 
     }
 
-    public Event(String eventName, String hostName, Double lat, String locationName, Double lon, String timeStamp) {
-        this.eventName = eventName;
-        this.hostName = hostName;
-        this.latitude = lat;
+    public Event(String host, String eventDesc, String locationName, Double latitude, Double longitude, long startTime, int durationInMinutes) {
+        this.hostName = host;
+        this.eventName = eventDesc;
         this.locationName = locationName;
-        this.longitude = lon;
-        this.timeStamp = timeStamp;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.startTime  = startTime;
+        this.durationInMinutes = durationInMinutes;
     }
 }
