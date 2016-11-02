@@ -35,12 +35,12 @@ public class NewEventActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_event);
-        host = (EditText)findViewById(R.id.host);
-        eventType = (EditText)findViewById(R.id.eventType);
-        eventLocationView = (EditText)findViewById(R.id.eventLocation);
-        duration = (EditText)findViewById(R.id.duration);
+        host = (EditText) findViewById(R.id.host);
+        eventType = (EditText) findViewById(R.id.eventType);
+        eventLocationView = (EditText) findViewById(R.id.eventLocation);
+        duration = (EditText) findViewById(R.id.duration);
 
-        if(getSupportActionBar() != null) {
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle("Create a meetup story");
         }
