@@ -13,6 +13,10 @@ public class Event {
     public Double longitude;
     public String timeStamp;
 
+    public Event(){
+
+    }
+
     public Event(String eventName, String hostName, Double lat, String locationName, Double lon, String timeStamp) {
         this.eventName = eventName;
         this.hostName = hostName;
