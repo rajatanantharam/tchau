@@ -1,7 +1,6 @@
 package app.lisboa.lisboapp.ui;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -17,7 +16,7 @@ import app.lisboa.lisboapp.model.Event;
 /**
  * Created by Rajat Anantharam on 01/11/16.
  */
-public class NewEventActivity extends AppCompatActivity {
+public class NewEventActivity extends BaseLocationActivity {
 
     private EditText host, eventType, eventLocation, duration;
 
@@ -44,7 +43,14 @@ public class NewEventActivity extends AppCompatActivity {
         }
 
         DatabaseReference eventsRef = FirebaseDatabase.getInstance().getReference().child("events");
-        eventsRef.push().setValue(new Event(host.getText().toString(),eventType.getText().toString(),eventLocation.getText().toString(),0D,0D,
+
+        Double lat = 0D, lon = 0D;
+        if(mCurrentLocation != null && mCurrentLocation.hasAccuracy()) {
+            lat = mCurrentLocation.getLatitude();
+            lon = mCurrentLocation.getLongitude();
+        }
+
+        eventsRef.push().setValue(new Event(host.getText().toString(),eventType.getText().toString(),eventLocation.getText().toString(),lat,lon,
                 new Date().getTime(),Integer.parseInt(duration.getText().toString())));
         finish();
     }
