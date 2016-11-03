@@ -13,12 +13,13 @@ public class Event {
     public Double longitude;
     public long startTime;
     public int durationInMinutes;
+    public String hostId;
 
     public Event(){
 
     }
 
-    public Event(String host, String eventDesc, String locationName, Double latitude, Double longitude, long startTime, int durationInMinutes) {
+    public Event(String host, String eventDesc, String locationName, Double latitude, Double longitude, long startTime, int durationInMinutes, String hostId) {
         this.hostName = host;
         this.eventName = eventDesc;
         this.locationName = locationName;
@@ -26,5 +27,6 @@ public class Event {
         this.longitude = longitude;
         this.startTime  = startTime;
         this.durationInMinutes = durationInMinutes;
+        this.hostId = hostId;
     }
 }

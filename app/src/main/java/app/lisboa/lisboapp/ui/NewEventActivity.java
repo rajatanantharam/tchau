@@ -18,6 +18,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.Date;
 
 import app.lisboa.lisboapp.R;
+import app.lisboa.lisboapp.model.Cache;
 import app.lisboa.lisboapp.model.Event;
 
 /**
@@ -70,14 +71,10 @@ public class NewEventActivity extends AppCompatActivity {
         }
 
         DatabaseReference eventsRef = FirebaseDatabase.getInstance().getReference().child("events");
-
-//        if (mCurrentLocation != null && mCurrentLocation.hasAccuracy()) {
-//            lat = mCurrentLocation.getLatitude();
-//            lon = mCurrentLocation.getLongitude();
-//        }
-
-        eventsRef.push().setValue(new Event(host.getText().toString(), eventType.getText().toString(), eventLocation, lat, lon,
-                new Date().getTime(), Integer.parseInt(duration.getText().toString())));
+        Event event = new Event(host.getText().toString(), eventType.getText().toString(), eventLocation, lat, lon,
+                new Date().getTime(), Integer.parseInt(duration.getText().toString()), getIntent().getStringExtra("user_id"));
+        eventsRef.push().setValue(event);
+        Cache.storeEvent(this,event);
         finish();
 
     }

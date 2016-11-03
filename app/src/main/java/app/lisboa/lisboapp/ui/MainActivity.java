@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ListView eventListView;
     private List<Event> eventList;
+    private FirebaseAuth mFirebaseAuth;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
             getSupportActionBar().setTitle("What's going on?");
         }
 
-        FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseAuth.signInAnonymously();
 
         eventListView = (ListView)findViewById(R.id.eventList);
@@ -80,6 +82,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void createEvent(View view) {
-        startActivity(new Intent(MainActivity.this,NewEventActivity.class));
+        Intent intent = new Intent(MainActivity.this,NewEventActivity.class);
+        FirebaseUser user = mFirebaseAuth.getCurrentUser();
+        assert user != null;
+        intent.putExtra("user_id",user.getUid());
+        startActivity(intent);
     }
 }
