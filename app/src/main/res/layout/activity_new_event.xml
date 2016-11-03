@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:orientation="vertical"
-                android:background="#28B1A6"
+                android:background="@drawable/bg_createevent"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -28,10 +28,7 @@
                 android:layout_height="wrap_content"/>
 
             <EditText
-                android:textColorHint="#808080"
                 android:textColor="@android:color/white"
-                android:background="@android:color/transparent"
-                android:hint="Name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/host"/>
@@ -46,17 +43,14 @@
 
             <TextView
                 android:textColor="@android:color/white"
-                android:text="I would like to"
+                android:text="I'm going for"
                 android:paddingRight="10dp"
                 android:textSize="20sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
             <EditText
-                android:textColorHint="#808080"
                 android:textColor="@android:color/white"
-                android:background="@android:color/transparent"
-                android:hint="have coffee"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/eventType"/>
@@ -77,19 +71,18 @@
                 android:layout_height="wrap_content"/>
 
             <EditText
-                android:textColorHint="#808080"
+                android:paddingRight="20dp"
                 android:textColor="@android:color/white"
-                android:background="@android:color/transparent"
-                android:hint="Cafe Lisboa"
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/eventLocation"/>
 
             <Button
-                android:text="Other"
+                android:drawableTop="@drawable/hourglass"
                 android:onClick="pickLocation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_gravity="center_vertical"
+                android:layout_width="40dp"
+                android:layout_height="35dp"/>
 
         </LinearLayout>
 
@@ -108,11 +101,8 @@
 
             <EditText
                 android:paddingRight="10dp"
-                android:textColorHint="#808080"
                 android:textColor="@android:color/white"
-                android:background="@android:color/transparent"
-                android:hint="15"
-                android:layout_width="wrap_content"
+                android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/duration"/>
 
@@ -136,61 +126,5 @@
         android:onClick="broadCastEvent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
-    
-    <LinearLayout
-        android:layout_alignParentBottom="true"
-        android:background="#FAFAFA"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="50dp">
-
-        <LinearLayout
-            android:gravity="center"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:textSize="10sp"
-                android:text="Planning"
-                android:gravity="center_vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:gravity="center"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:textSize="10sp"
-                android:text="Meetups"
-                android:gravity="center_vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"/>
-
-        </LinearLayout>
-        <LinearLayout
-            android:gravity="center"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:textSize="10sp"
-                android:text="Invite"
-                android:gravity="center_vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"/>
-
-        </LinearLayout>
-
-    </LinearLayout>
 
 </RelativeLayout>
