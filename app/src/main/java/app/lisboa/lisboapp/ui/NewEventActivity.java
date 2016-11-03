@@ -29,7 +29,6 @@ public class NewEventActivity extends AppCompatActivity {
     private EditText host, eventType, eventLocationView, duration;
     private static final int PLACE_PICKER_REQUEST = 1;
     private Double lat = 0D, lon = 0D;
-    private String eventLocation = null;
 
 
     @Override
@@ -45,6 +44,8 @@ public class NewEventActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle("Create a meetup story");
         }
+
+        prefillViews();
     }
 
     @Override
@@ -60,23 +61,35 @@ public class NewEventActivity extends AppCompatActivity {
     }
 
     public void broadCastEvent(View view) {
+
         if (host.getText() == null || host.getText().toString().equalsIgnoreCase("")
                 || eventType.getText() == null || eventType.getText().toString().equalsIgnoreCase("")
-                || eventLocation == null
-                || duration.getText() == null || duration.getText().toString().equalsIgnoreCase("")
-                || lat == 0D || lon == 0D) {
+                || eventLocationView.getText() == null || eventLocationView.getText().toString().equalsIgnoreCase("")
+                || duration.getText() == null || duration.getText().toString().equalsIgnoreCase("")) {
 
             Toast.makeText(this, "Please fill up all the fields", Toast.LENGTH_SHORT).show();
             return;
         }
 
         DatabaseReference eventsRef = FirebaseDatabase.getInstance().getReference().child("events");
-        Event event = new Event(host.getText().toString(), eventType.getText().toString(), eventLocation, lat, lon,
+        Event event = new Event(host.getText().toString(), eventType.getText().toString(), eventLocationView.getText().toString(), lat, lon,
                 new Date().getTime(), Integer.parseInt(duration.getText().toString()), getIntent().getStringExtra("user_id"));
         eventsRef.push().setValue(event);
         Cache.storeEvent(this,event);
         finish();
 
+    }
+
+    private void prefillViews() {
+
+        Event event = Cache.getPreviousEvent(this);
+        if(event == null) {
+            return;
+        }
+
+        host.setText(event.hostName);
+        eventType.setText(event.eventName);
+        duration.setText(String.valueOf(event.durationInMinutes));
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -85,7 +98,9 @@ public class NewEventActivity extends AppCompatActivity {
                 Place place = PlacePicker.getPlace(this,data);
                 lat = place.getLatLng().latitude;
                 lon = place.getLatLng().longitude;
-                eventLocation = String.valueOf(place.getName());
+                if(place.getName() != null) {
+                    eventLocationView.setText(String.valueOf(place.getName()));
+                }
             }
         }
     }

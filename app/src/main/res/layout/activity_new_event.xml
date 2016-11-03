@@ -28,6 +28,7 @@
                 android:layout_height="wrap_content"/>
 
             <EditText
+                android:inputType="textCapWords"
                 android:textColor="@android:color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -104,7 +105,8 @@
                 android:textColor="@android:color/white"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/duration"/>
+                android:id="@+id/duration"
+                android:inputType="phone"/>
 
             <TextView
                 android:textColor="@android:color/white"
