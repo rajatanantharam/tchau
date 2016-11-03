@@ -1,5 +1,8 @@
 package app.lisboa.lisboapp.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Rajat Anantharam on 01/11/16.
  */
@@ -14,6 +17,7 @@ public class Event {
     public long startTime;
     public int durationInMinutes;
     public String hostId;
+    public List<String> attendees;
 
     public Event(){
 
@@ -29,4 +33,5 @@ public class Event {
         this.durationInMinutes = durationInMinutes;
         this.hostId = hostId;
     }
+
 }

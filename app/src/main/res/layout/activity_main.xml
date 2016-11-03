@@ -8,7 +8,8 @@
     <ListView
         android:id="@+id/eventList"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:divider="@null" />
 
     <com.getbase.floatingactionbutton.FloatingActionsMenu
         android:id="@+id/multiple_actions"
@@ -42,7 +43,6 @@
             fab:fab_colorPressed="@color/blue_semi_transparent_pressed"
             fab:fab_title="Info"
             android:onClick="goToInfoActivity"/>
-
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/createEvent"
             android:layout_width="wrap_content"

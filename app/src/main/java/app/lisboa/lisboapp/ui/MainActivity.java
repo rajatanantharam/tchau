@@ -5,16 +5,20 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import app.lisboa.lisboapp.R;
@@ -30,6 +34,9 @@ public class MainActivity extends AppCompatActivity {
     private ListView eventListView;
     private List<Event> eventList;
     private FirebaseAuth mFirebaseAuth;
+    private DatabaseReference mDataBase;
+    private FirebaseUser user;
+    private HashMap<Event, String > eventMap;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,12 +49,47 @@ public class MainActivity extends AppCompatActivity {
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseAuth.signInAnonymously();
+        mDataBase = FirebaseDatabase.getInstance().getReference();
+        user = mFirebaseAuth.getCurrentUser();
 
         eventListView = (ListView)findViewById(R.id.eventList);
         eventList = new ArrayList<>();
+        eventMap = new HashMap<>();
 
-        final EventAdapter eventAdapter = new EventAdapter(this,R.layout.event_adapter,eventList);
+        final EventAdapter eventAdapter = new EventAdapter(this,R.layout.event_adapter,eventList, eventMap, mFirebaseAuth.getCurrentUser());
         eventListView.setAdapter(eventAdapter);
+        eventAdapter.setJoinedRoomListener(new OnJoinedRoomListener() {
+            @Override
+            public void onJoinedRoom(Event event, View eventView) {
+                Button joinRoom = (Button) eventView.findViewById(R.id.joinRoom);
+                TextView location = (TextView) eventView.findViewById(R.id.locationName);
+
+                DatabaseReference databaseReference = mDataBase.child("events").child(eventMap.get(event));
+
+                if(event.attendees == null) {
+                    event.attendees = new ArrayList<>();
+                }
+
+                int count = event.attendees!=null ? event.attendees.size() : 0 ;
+
+                if(event.attendees.contains(user.getUid())) {
+                    event.attendees.remove(user.getUid());
+                    joinRoom.setSelected(false);
+                    count--;
+                } else {
+                    event.attendees.add(user.getUid());
+                    joinRoom.setSelected(true);
+                    count++;
+                }
+
+                String locationName = "+ " + count + " others at "+ event.locationName;
+                location.setText(locationName);
+
+                HashMap<String, Object> update = new HashMap<>();
+                update.put("attendees", event.attendees);
+                databaseReference.updateChildren(update);
+            }
+        });
 
         ChildEventListener eventListener = new ChildEventListener() {
             @Override
@@ -55,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Event addedEvent = dataSnapshot.getValue(Event.class);
                 eventList.add(addedEvent);
+                eventMap.put(addedEvent, dataSnapshot.getKey());
                 eventAdapter.notifyDataSetChanged();
             }
 
@@ -83,7 +126,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void createEvent(View view) {
         Intent intent = new Intent(MainActivity.this,NewEventActivity.class);
-        FirebaseUser user = mFirebaseAuth.getCurrentUser();
         assert user != null;
         intent.putExtra("user_id",user.getUid());
         startActivity(intent);
