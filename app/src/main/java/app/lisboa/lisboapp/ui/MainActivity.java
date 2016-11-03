@@ -88,4 +88,10 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("user_id",user.getUid());
         startActivity(intent);
     }
+
+    public void goToInfoActivity(View view) {
+    }
+
+    public void goToHelpActivity(View view) {
+    }
 }
