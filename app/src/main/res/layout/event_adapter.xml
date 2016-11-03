@@ -4,55 +4,57 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:id="@+id/eventView"
-              android:padding="15dp">
+              android:paddingTop = "15dp"
+              android:paddingLeft= "15dp"
+              android:paddingRight="15dp"
+              android:paddingBottom="5dp">
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:id="@+id/eventImage"/>
 
-    <TextView
+    <app.lisboa.lisboapp.utils.FundaTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/eventImage"
         android:layout_alignTop="@+id/eventImage"
         android:textStyle="bold"
         android:id="@+id/eventName"
-        android:fontFamily="sans-serif"
-        android:textSize="18sp"
-        android:lineSpacingMultiplier="1.3"
+        android:textSize="17sp"
         android:textColor="@android:color/black"/>
 
-    <TextView
+    <app.lisboa.lisboapp.utils.FundaTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/eventName"
         android:layout_alignLeft="@+id/eventName"
         android:id="@+id/locationName"
         android:layout_marginTop="5dp"
-        android:fontFamily="sans-serif"
         android:textSize="14sp"
-        android:lineSpacingMultiplier="1.3"
         android:textColor="@android:color/black"/>
 
-    <TextView
+    <app.lisboa.lisboapp.utils.FundaTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/locationName"
         android:layout_alignLeft="@+id/locationName"
         android:layout_marginTop="5dp"
         android:id="@+id/eventTime"
-        android:fontFamily="sans-serif"
         android:textSize="14sp"
         android:textColor="@color/gray"/>
     
     <View
         android:layout_width="1dp"
-        android:layout_height="wrap_content"
+        android:layout_height="10dp"
         android:layout_toRightOf="@+id/eventTime"
         android:layout_alignTop="@+id/eventTime"
-        android:paddingLeft="10dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginLeft="10dp"
         android:id="@+id/divider"
         android:background="@color/gray"/>
     
@@ -60,30 +62,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src = "@drawable/icon_time"
-        android:paddingLeft="10dp"
-        android:paddingTop="3dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="2dp"
         android:layout_toRightOf="@+id/divider"
         android:layout_alignTop="@+id/eventTime"
         android:id="@+id/iconDuration"/>
 
-    <TextView
+    <app.lisboa.lisboapp.utils.FundaTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/iconDuration"
-        android:layout_alignTop="@+id/iconDuration"
-        android:paddingLeft="10dp"
+        android:layout_alignTop="@+id/eventTime"
+        android:paddingLeft="5dp"
         android:id="@+id/eventDuration"
-        android:fontFamily="sans-serif"
         android:textSize="14sp"
         android:textColor="@color/gray"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="5dp"
         android:layout_below="@+id/eventTime"
+        android:layout_marginTop="5dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
         android:background="@color/gray"/>
-
 
     <Button
         android:layout_width="wrap_content"

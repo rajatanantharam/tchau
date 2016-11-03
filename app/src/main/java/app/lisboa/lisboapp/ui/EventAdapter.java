@@ -9,14 +9,15 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.HashMap;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import app.lisboa.lisboapp.R;
 import app.lisboa.lisboapp.model.Event;
+import app.lisboa.lisboapp.utils.FundaTextView;
 
 /**
  * Created by Rajat Anantharam on 02/11/16.
@@ -27,16 +28,14 @@ public class EventAdapter extends ArrayAdapter<Event> {
     private int resourceViewId;
     private String name, location, startTime, duration;
     private FirebaseUser firebaseUser;
-    private HashMap<Event, String> eventHashMap;
     private OnJoinedRoomListener joinedRoomListener;
 
 
-    public EventAdapter(Context context, int resource, List<Event> objects, HashMap<Event, String> eventMap, FirebaseUser firebaseUser) {
+    public EventAdapter(Context context, int resource, List<Event> objects, FirebaseUser firebaseUser) {
         super(context, resource, objects);
         this.mContext = context;
         this.resourceViewId = resource;
         this.firebaseUser = firebaseUser;
-        this.eventHashMap = eventMap;
     }
 
     private UIContainer holder;
@@ -67,9 +66,12 @@ public class EventAdapter extends ArrayAdapter<Event> {
             } else {
                 holder.joinRoom.setSelected(false);
             }
+            Date date = new Date(event.startTime);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+            simpleDateFormat.setTimeZone(TimeZone.getDefault());
 
-            startTime = String.valueOf(event.startTime);
-            duration = String.valueOf(event.durationInMinutes);
+            startTime = String.valueOf(simpleDateFormat.format(date));
+            duration = String.valueOf(event.durationInMinutes) + "m";
 
             holder.eventName.setText(name);
             holder.eventLocation.setText(location);
@@ -91,15 +93,15 @@ public class EventAdapter extends ArrayAdapter<Event> {
 
     private class UIContainer {
         public ViewGroup eventView;
-        public TextView eventName, eventLocation, eventTime, eventDuration;
+        public FundaTextView eventName, eventLocation, eventTime, eventDuration;
         public Button joinRoom;
 
         public UIContainer(View convertView) {
             eventView = (ViewGroup) convertView.findViewById(R.id.eventView);
-            eventName = (TextView) convertView.findViewById(R.id.eventName);
-            eventLocation = (TextView) convertView.findViewById(R.id.locationName);
-            eventTime = (TextView) convertView.findViewById(R.id.eventTime);
-            eventDuration = (TextView) convertView.findViewById(R.id.eventDuration);
+            eventName = (FundaTextView) convertView.findViewById(R.id.eventName);
+            eventLocation = (FundaTextView) convertView.findViewById(R.id.locationName);
+            eventTime = (FundaTextView) convertView.findViewById(R.id.eventTime);
+            eventDuration = (FundaTextView) convertView.findViewById(R.id.eventDuration);
             joinRoom = (Button) convertView.findViewById(R.id.joinRoom);
         }
     }

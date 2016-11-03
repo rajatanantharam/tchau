@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -23,6 +23,7 @@ import java.util.List;
 
 import app.lisboa.lisboapp.R;
 import app.lisboa.lisboapp.model.Event;
+import app.lisboa.lisboapp.utils.FundaTextView;
 
 
 /**
@@ -56,13 +57,18 @@ public class MainActivity extends AppCompatActivity {
         eventList = new ArrayList<>();
         eventMap = new HashMap<>();
 
-        final EventAdapter eventAdapter = new EventAdapter(this,R.layout.event_adapter,eventList, eventMap, mFirebaseAuth.getCurrentUser());
+        final EventAdapter eventAdapter = new EventAdapter(this,R.layout.event_adapter,eventList, mFirebaseAuth.getCurrentUser());
         eventListView.setAdapter(eventAdapter);
         eventAdapter.setJoinedRoomListener(new OnJoinedRoomListener() {
             @Override
             public void onJoinedRoom(Event event, View eventView) {
                 Button joinRoom = (Button) eventView.findViewById(R.id.joinRoom);
-                TextView location = (TextView) eventView.findViewById(R.id.locationName);
+                FundaTextView location = (FundaTextView) eventView.findViewById(R.id.locationName);
+
+                if(event.hostId.equalsIgnoreCase(user.getUid())) {
+                    Toast.makeText(MainActivity.this, "You cannot attend the event you created", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 DatabaseReference databaseReference = mDataBase.child("events").child(eventMap.get(event));
 
