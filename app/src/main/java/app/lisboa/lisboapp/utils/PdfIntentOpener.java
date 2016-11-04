@@ -1,11 +1,14 @@
 package app.lisboa.lisboapp.utils;
 
 import android.annotation.SuppressLint;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.net.Uri;
+import android.os.Environment;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,12 +39,21 @@ public class PdfIntentOpener {
             Log.e("tag", e.getMessage());
         }
 
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(
-                Uri.parse("file://" + context.getFilesDir() + "/" + fileName),
-                "application/pdf");
+        file = new File(Environment.getExternalStorageDirectory().getPath() + "/" + "Lissabon_exportLR.pdf");
 
-        context.startActivity(intent);
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(Uri.fromFile(file),"application/pdf");
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        try
+        {
+            context.startActivity(intent);
+        }
+        catch (ActivityNotFoundException e)
+        {
+            Toast.makeText(context, "NO Pdf Viewer", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     private static void copyFile(InputStream in, OutputStream out) throws IOException {

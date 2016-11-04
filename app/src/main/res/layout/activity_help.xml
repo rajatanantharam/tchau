@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"/>
 
         <Button
-            android:onClick="callEduardo"
+            android:onClick="call"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
             android:layout_marginTop="30dp"
@@ -45,44 +45,62 @@
             android:textColor="@android:color/white"
             android:textAllCaps="false"
             android:layout_gravity="center"
-            android:text="Eduardo +1111111"
+            android:tag="0655161181"
+            android:text="Eduardo +31655161181 "
             android:layout_width="match_parent"
             android:layout_height="50dp"/>
 
         <Button
-            android:onClick="callJan"
+            android:onClick="call"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"        android:background="@color/colorPrimary"
             android:textColor="@android:color/white"
             android:textAllCaps="false"
             android:layout_gravity="center"
-            android:text="Jan +316 123 456 78"
+            android:tag="0652433778"
+            android:text="Jan +31652433778"
             android:layout_width="match_parent"
             android:layout_height="50dp"/>
 
         <Button
-            android:onClick="callMarjan"
+            android:onClick="call"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"        android:background="@color/colorPrimary"
             android:textColor="@android:color/white"
             android:textAllCaps="false"
             android:layout_gravity="center"
-            android:text="Marjan +11111111"
+            android:tag="0612723292"
+            android:text="Marjan +31612723292"
             android:layout_width="match_parent"
             android:layout_height="50dp"/>
 
         <Button
-            android:onClick="callJanine"
+            android:onClick="call"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
             android:background="@color/colorPrimary"
             android:textColor="@android:color/white"
             android:textAllCaps="false"
+            android:tag="0615863301"
             android:layout_gravity="center"
-            android:text="Janine +11111111"
+            android:text="Janine +31615863301"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"/>
+
+        <Button
+            android:onClick="call"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:background="@color/colorPrimary"
+            android:textColor="@android:color/white"
+            android:textAllCaps="false"
+            android:tag="0655113011"
+            android:layout_gravity="center"
+            android:text="Merel +31655113011"
             android:layout_width="match_parent"
             android:layout_height="50dp"/>
 

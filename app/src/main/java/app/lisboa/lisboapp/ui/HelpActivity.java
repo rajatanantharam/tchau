@@ -1,5 +1,7 @@
 package app.lisboa.lisboapp.ui;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -35,16 +37,8 @@ public class HelpActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
-    public void callJan(View view) {
-    }
-
-    public void callEduardo(View view) {
-    }
-
-    public void callMarjan(View view) {
-    }
-
-    public void callJanine(View view) {
+    public void call(View view) {
+        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", String.valueOf(view.getTag()), null));
+        startActivity(intent);
     }
 }
