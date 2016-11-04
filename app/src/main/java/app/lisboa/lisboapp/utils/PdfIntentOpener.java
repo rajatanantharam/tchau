@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.net.Uri;
-import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -48,6 +47,7 @@ public class PdfIntentOpener {
             context.startActivity(intent1);
         } catch (ActivityNotFoundException e) {
             Toast.makeText(context, "No viewer available to view pdf", Toast.LENGTH_SHORT);
+            e.printStackTrace();
         }
     }
 
