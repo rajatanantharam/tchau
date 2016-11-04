@@ -61,16 +61,18 @@ public class EventAdapter extends ArrayAdapter<Event> {
             } else {
                 holder.eventJoinButton.setSelected(false);
             }
-            Date date = new Date(event.startTime);
+
+
+            Date date = new java.util.Date(event.startTime * 1000);
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
             simpleDateFormat.setTimeZone(TimeZone.getDefault());
 
-            String startTime = String.valueOf(simpleDateFormat.format(date));
+            String eventTime = String.valueOf(simpleDateFormat.format(date));
             String duration = String.valueOf(event.durationInMinutes) + "m";
 
             holder.eventNameTextView.setText(name);
             holder.eventLocationTextView.setText(location);
-            holder.eventTimeTextView.setText(startTime);
+            holder.eventTimeTextView.setText(eventTime);
             holder.eventDurationTextView.setText(duration);
             holder.eventJoinButton.setOnClickListener(new View.OnClickListener() {
                 @Override
