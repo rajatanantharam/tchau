@@ -14,7 +14,6 @@ public class Event  implements Serializable, Comparable<Event> {
     public String locationName;
     public Double latitude;
     public Double longitude;
-    public String emojiName;
     public long startTime;
     public int durationInMinutes;
     public String hostId;
@@ -24,7 +23,7 @@ public class Event  implements Serializable, Comparable<Event> {
 
     }
 
-    public Event(String host, String eventDesc, String locationName, Double latitude, Double longitude, long startTime, int durationInMinutes, String hostId, String emojiName) {
+    public Event(String host, String eventDesc, String locationName, Double latitude, Double longitude, long startTime, int durationInMinutes, String hostId) {
         this.hostName = host;
         this.eventName = eventDesc;
         this.locationName = locationName;
@@ -33,7 +32,6 @@ public class Event  implements Serializable, Comparable<Event> {
         this.startTime  = startTime;
         this.durationInMinutes = durationInMinutes;
         this.hostId = hostId;
-        this.emojiName = emojiName;
     }
 
 
