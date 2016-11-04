@@ -3,6 +3,9 @@ package app.lisboa.lisboapp.utils;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
@@ -51,17 +54,19 @@ public class NotificationBuilder {
 
             Response response = null;
             try {
-//                response = performHttpPost("{\n" +
-//                        "  \"to\": \"/topics/events\",\n" +
-//                        "  \"data\": {\n" +
-//                        "    \"message\": \"Wazzzzaaaa!\"\n" +
-//                        "   }\n" +
-//                        "}");
 
-                response = performHttpPost("{\"to\":\"/topics/events\",\"priority\":\"high\",\"notification\":{\"body\":"+notificationBody+"}}");
-            } catch (IOException e) {
+                JSONObject object = new JSONObject();
+                object.put("to","/topics/events");
+                object.put("priority","high");
+                JSONObject notificationObj = new JSONObject();
+                notificationObj.put("body",notificationBody);
+                notificationObj.put("sound","tchau");
+                object.put("notification",notificationObj);
+                response = performHttpPost(object.toString());
+            } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }
+
             return response;
         }
 

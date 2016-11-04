@@ -15,8 +15,6 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.Date;
-
 import app.lisboa.lisboapp.R;
 import app.lisboa.lisboapp.model.Cache;
 import app.lisboa.lisboapp.model.Event;
@@ -74,7 +72,7 @@ public class NewEventActivity extends AppCompatActivity {
 
         DatabaseReference eventsRef = FirebaseDatabase.getInstance().getReference().child("events");
         Event event = new Event(host.getText().toString(), eventType.getText().toString(), eventLocationView.getText().toString(), lat, lon,
-                new Date().getTime(), Integer.parseInt(duration.getText().toString()), getIntent().getStringExtra("user_id"));
+                System.currentTimeMillis() / 1000L , Integer.parseInt(duration.getText().toString()), getIntent().getStringExtra("user_id"));
         eventsRef.push().setValue(event);
         Cache.storeEvent(this, event);
         new NotificationBuilder().send(event);

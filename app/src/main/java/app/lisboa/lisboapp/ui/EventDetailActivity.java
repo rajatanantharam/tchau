@@ -59,7 +59,7 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
 
         // duration
 
-        Date date = new Date(event.startTime);
+        Date date = new java.util.Date(event.startTime * 1000);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
         simpleDateFormat.setTimeZone(TimeZone.getDefault());
 
