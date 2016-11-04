@@ -1,14 +1,9 @@
 package app.lisboa.lisboapp.ui;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.AssetManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -23,10 +18,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +25,7 @@ import java.util.List;
 import app.lisboa.lisboapp.R;
 import app.lisboa.lisboapp.model.Event;
 import app.lisboa.lisboapp.utils.FundaTextView;
+import app.lisboa.lisboapp.utils.PdfIntentOpener;
 
 
 /**
@@ -153,45 +145,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void goToInfoActivity(View view) {
-        copyReadAssets();
+        PdfIntentOpener.openFile(this,"");
     }
 
     public void goToHelpActivity(View view) {
         startActivity(new Intent(MainActivity.this,HelpActivity.class));
-    }
-
-    @SuppressLint("WorldReadableFiles")
-    private void copyReadAssets() {
-        AssetManager assetManager = getAssets();
-
-        InputStream in;
-        OutputStream out;
-        File file = new File(getFilesDir(), "RA_Trouw.pdf");
-        try {
-            in = assetManager.open("RA_Trouw.pdf");
-            out = openFileOutput(file.getName(), Context.MODE_WORLD_READABLE);
-            copyFile(in, out);
-            in.close();
-            out.flush();
-            out.close();
-        } catch (Exception e) {
-            Log.e("tag", e.getMessage());
-        }
-
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(
-                Uri.parse("file://" + getFilesDir() + "/RA_Trouw.pdf"),
-                "application/pdf");
-
-        startActivity(intent);
-    }
-
-    private void copyFile(InputStream in, OutputStream out) throws IOException {
-        byte[] buffer = new byte[1024];
-        int read;
-        while ((read = in.read(buffer)) != -1)
-        {
-            out.write(buffer, 0, read);
-        }
     }
 }
