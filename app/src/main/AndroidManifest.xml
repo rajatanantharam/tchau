@@ -16,13 +16,17 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.SplashActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".ui.MainActivity"
+                  android:screenOrientation="portrait"/>
 
         <activity android:name=".ui.NewEventActivity"
                   android:screenOrientation="portrait"/>
@@ -35,8 +39,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDRM515OFSDLWKBX-FFHIVhxyU3aO-MPls" /><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
-     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+            android:value="AIzaSyDRM515OFSDLWKBX-FFHIVhxyU3aO-MPls" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version"/>
