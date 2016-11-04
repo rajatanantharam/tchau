@@ -26,6 +26,12 @@
         <activity android:name=".ui.NewEventActivity"
                   android:screenOrientation="portrait"/>
 
+        <activity android:name=".ui.HelpActivity"
+                  android:screenOrientation="portrait"/>
+
+        <activity android:name=".ui.EventDetailActivity"
+                  android:screenOrientation="portrait"/>
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDRM515OFSDLWKBX-FFHIVhxyU3aO-MPls" /><!-- ATTENTION: This was auto-generated to add Google Play services to your project for

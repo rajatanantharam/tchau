@@ -1,12 +1,12 @@
 package app.lisboa.lisboapp.ui;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseUser;
 
@@ -26,9 +26,7 @@ public class EventAdapter extends ArrayAdapter<Event> {
 
     private Context mContext;
     private int resourceViewId;
-    private String name, location, startTime, duration;
     private FirebaseUser firebaseUser;
-    private OnJoinedRoomListener joinedRoomListener;
 
 
     public EventAdapter(Context context, int resource, List<Event> objects, FirebaseUser firebaseUser) {
@@ -38,15 +36,11 @@ public class EventAdapter extends ArrayAdapter<Event> {
         this.firebaseUser = firebaseUser;
     }
 
-    private UIContainer holder;
-
-    public void setJoinedRoomListener(OnJoinedRoomListener joinedRoomListener) {
-        this.joinedRoomListener = joinedRoomListener;
-    }
-
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
 
+        UIContainer holder;
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(resourceViewId, parent, false);
             holder = new UIContainer(convertView);
@@ -57,33 +51,37 @@ public class EventAdapter extends ArrayAdapter<Event> {
 
         final Event event = getItem(position);
         if(event!=null) {
-            name = event.eventName + " with " + event.hostName;
+
+            String name = event.eventName + " with " + event.hostName;
             int count = event.attendees!=null ? event.attendees.size() : 0 ;
-            location = "+ " + count + " others at "+ event.locationName;
+            String location = "+ " + count + " others at " + event.locationName;
 
             if(event.attendees!=null && event.attendees.contains(firebaseUser.getUid())) {
-                holder.joinRoom.setSelected(true);
+                holder.eventJoinButton.setSelected(true);
             } else {
-                holder.joinRoom.setSelected(false);
+                holder.eventJoinButton.setSelected(false);
             }
             Date date = new Date(event.startTime);
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
             simpleDateFormat.setTimeZone(TimeZone.getDefault());
 
-            startTime = String.valueOf(simpleDateFormat.format(date));
-            duration = String.valueOf(event.durationInMinutes) + "m";
+            String startTime = String.valueOf(simpleDateFormat.format(date));
+            String duration = String.valueOf(event.durationInMinutes) + "m";
 
-            holder.eventName.setText(name);
-            holder.eventLocation.setText(location);
-            holder.eventTime.setText(startTime);
-            holder.eventDuration.setText(duration);
-            holder.eventView.setOnClickListener(new View.OnClickListener() {
+            holder.eventNameTextView.setText(name);
+            holder.eventLocationTextView.setText(location);
+            holder.eventTimeTextView.setText(startTime);
+            holder.eventDurationTextView.setText(duration);
+            holder.eventJoinButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(view == null) {
-                        return;
-                    }
-                    joinedRoomListener.onJoinedRoom(event, view);
+                    ((MainActivity)mContext).onJoinButtonClicked(event);
+                }
+            });
+            holder.eventParentView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ((MainActivity)mContext).onListItemClicked(event);
                 }
             });
         }
@@ -92,17 +90,16 @@ public class EventAdapter extends ArrayAdapter<Event> {
     }
 
     private class UIContainer {
-        public ViewGroup eventView;
-        public FundaTextView eventName, eventLocation, eventTime, eventDuration;
-        public Button joinRoom;
-
-        public UIContainer(View convertView) {
-            eventView = (ViewGroup) convertView.findViewById(R.id.eventView);
-            eventName = (FundaTextView) convertView.findViewById(R.id.eventName);
-            eventLocation = (FundaTextView) convertView.findViewById(R.id.locationName);
-            eventTime = (FundaTextView) convertView.findViewById(R.id.eventTime);
-            eventDuration = (FundaTextView) convertView.findViewById(R.id.eventDuration);
-            joinRoom = (Button) convertView.findViewById(R.id.joinRoom);
+        ViewGroup eventParentView;
+        FundaTextView eventNameTextView, eventLocationTextView, eventTimeTextView, eventDurationTextView;
+        Button eventJoinButton;
+        UIContainer(View convertView) {
+            eventParentView = (ViewGroup) convertView.findViewById(R.id.eventView);
+            eventNameTextView = (FundaTextView) convertView.findViewById(R.id.eventName);
+            eventLocationTextView = (FundaTextView) convertView.findViewById(R.id.locationName);
+            eventTimeTextView = (FundaTextView) convertView.findViewById(R.id.eventTime);
+            eventDurationTextView = (FundaTextView) convertView.findViewById(R.id.eventDuration);
+            eventJoinButton = (Button) convertView.findViewById(R.id.joinRoom);
         }
     }
 }

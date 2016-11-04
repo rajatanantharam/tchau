@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <fragment
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/map"
+        tools:context="com.funda.two.view.SearchMapActivity"
+        android:name="com.google.android.gms.maps.SupportMapFragment" />
+
+    <RelativeLayout
+        android:background="@android:color/white"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:padding="10dp"
+            android:id="@+id/eventEmoji"
+            android:src="@drawable/scary_emoji"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <app.lisboa.lisboapp.utils.FundaTextView
+            android:paddingTop="10dp"
+            android:id="@+id/eventDescription"
+            android:layout_toRightOf="@+id/eventEmoji"
+            android:text="Get a snack with Rajat"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:layout_alignTop="@+id/eventEmoji"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <app.lisboa.lisboapp.utils.FundaTextView
+            android:layout_below="@+id/eventDescription"
+            android:id="@+id/eventLocationAndPeople"
+            android:layout_toRightOf="@+id/eventEmoji"
+            android:text="+15 other at the mall"
+            android:textSize="14sp"
+            android:textColor="@android:color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <app.lisboa.lisboapp.utils.FundaTextView
+            android:layout_toRightOf="@+id/eventEmoji"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/eventLocationAndPeople"
+            android:layout_marginTop="5dp"
+            android:id="@+id/eventTime"
+            android:textSize="14sp"
+            android:textColor="@color/gray"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="10dp"
+            android:layout_toRightOf="@+id/eventTime"
+            android:layout_alignTop="@+id/eventTime"
+            android:layout_marginTop="3dp"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/divider"
+            android:background="@color/gray"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src = "@drawable/icon_time"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="2dp"
+            android:layout_toRightOf="@+id/divider"
+            android:layout_alignTop="@+id/eventTime"
+            android:id="@+id/iconDuration"/>
+
+        <app.lisboa.lisboapp.utils.FundaTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/iconDuration"
+            android:layout_alignTop="@+id/eventTime"
+            android:paddingLeft="5dp"
+            android:id="@+id/eventDuration"
+            android:textSize="14sp"
+            android:textColor="@color/gray"/>
+
+        <Button
+            android:layout_marginTop="50dp"
+            android:layout_below="@+id/eventDuration"
+            android:background="@drawable/outline_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -5,11 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -24,7 +22,6 @@ import java.util.List;
 
 import app.lisboa.lisboapp.R;
 import app.lisboa.lisboapp.model.Event;
-import app.lisboa.lisboapp.utils.FundaTextView;
 import app.lisboa.lisboapp.utils.PdfIntentOpener;
 
 
@@ -34,17 +31,12 @@ import app.lisboa.lisboapp.utils.PdfIntentOpener;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ListView eventListView;
     private List<Event> eventList;
-    private FirebaseAuth mFirebaseAuth;
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
-    private DatabaseReference mDataBase;
-    private FirebaseUser user;
+
+    private DatabaseReference mDatabaseReference;
+    private FirebaseUser firebaseUser;
     private HashMap<Event, String > eventMap;
+    private EventAdapter eventAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,54 +47,17 @@ public class MainActivity extends AppCompatActivity {
             getSupportActionBar().setTitle("What's going on?");
         }
 
-        mFirebaseAuth = FirebaseAuth.getInstance();
+        FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseAuth.signInAnonymously();
-        mDataBase = FirebaseDatabase.getInstance().getReference();
-        user = mFirebaseAuth.getCurrentUser();
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference();
+        firebaseUser = mFirebaseAuth.getCurrentUser();
 
-        eventListView = (ListView) findViewById(R.id.eventList);
+        ListView eventListView = (ListView) findViewById(R.id.eventList);
         eventList = new ArrayList<>();
         eventMap = new HashMap<>();
 
-        final EventAdapter eventAdapter = new EventAdapter(this,R.layout.event_adapter,eventList, mFirebaseAuth.getCurrentUser());
+        eventAdapter = new EventAdapter(this,R.layout.event_adapter,eventList, mFirebaseAuth.getCurrentUser());
         eventListView.setAdapter(eventAdapter);
-        eventAdapter.setJoinedRoomListener(new OnJoinedRoomListener() {
-            @Override
-            public void onJoinedRoom(Event event, View eventView) {
-                Button joinRoom = (Button) eventView.findViewById(R.id.joinRoom);
-                FundaTextView location = (FundaTextView) eventView.findViewById(R.id.locationName);
-
-                if(event.hostId.equalsIgnoreCase(user.getUid())) {
-                    Toast.makeText(MainActivity.this, "You cannot attend the event you created", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                DatabaseReference databaseReference = mDataBase.child("events").child(eventMap.get(event));
-
-                if(event.attendees == null) {
-                    event.attendees = new ArrayList<>();
-                }
-
-                int count = event.attendees!=null ? event.attendees.size() : 0 ;
-
-                if(event.attendees.contains(user.getUid())) {
-                    event.attendees.remove(user.getUid());
-                    joinRoom.setSelected(false);
-                    count--;
-                } else {
-                    event.attendees.add(user.getUid());
-                    joinRoom.setSelected(true);
-                    count++;
-                }
-
-                String locationName = "+ " + count + " others at "+ event.locationName;
-                location.setText(locationName);
-
-                HashMap<String, Object> update = new HashMap<>();
-                update.put("attendees", event.attendees);
-                databaseReference.updateChildren(update);
-            }
-        });
 
         ChildEventListener eventListener = new ChildEventListener() {
             @Override
@@ -134,21 +89,53 @@ public class MainActivity extends AppCompatActivity {
 
             }
         };
+
         FirebaseDatabase.getInstance().getReference().child("events").addChildEventListener(eventListener);
     }
 
     public void createEvent(View view) {
         Intent intent = new Intent(MainActivity.this,NewEventActivity.class);
-        assert user != null;
-        intent.putExtra("user_id", user.getUid());
+        assert firebaseUser != null;
+        intent.putExtra("user_id", firebaseUser.getUid());
         startActivity(intent);
     }
 
     public void goToInfoActivity(View view) {
-        PdfIntentOpener.openFile(this,"");
+        PdfIntentOpener.openFile(this,"RA_Trouw.pdf");
     }
 
     public void goToHelpActivity(View view) {
         startActivity(new Intent(MainActivity.this,HelpActivity.class));
+    }
+
+    public void onJoinButtonClicked(Event event) {
+
+        if(event.hostId.equalsIgnoreCase(firebaseUser.getUid())) {
+            Toast.makeText(MainActivity.this, "You cannot attend the event you created", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        DatabaseReference databaseReference = mDatabaseReference.child("events").child(eventMap.get(event));
+
+        if(event.attendees == null) {
+            event.attendees = new ArrayList<>();
+        }
+        if(event.attendees.contains(firebaseUser.getUid())) {
+            event.attendees.remove(firebaseUser.getUid());
+        } else {
+            event.attendees.add(firebaseUser.getUid());
+        }
+
+        HashMap<String, Object> update = new HashMap<>();
+        update.put("attendees", event.attendees);
+        databaseReference.updateChildren(update);
+        eventAdapter.notifyDataSetChanged();
+    }
+
+    public void onListItemClicked(Event event) {
+        Intent intent = new Intent(MainActivity.this, EventDetailActivity.class);
+        intent.putExtra("event",event);
+        startActivity(intent);
+
     }
 }

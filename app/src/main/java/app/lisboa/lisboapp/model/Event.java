@@ -1,13 +1,13 @@
 package app.lisboa.lisboapp.model;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Rajat Anantharam on 01/11/16.
  */
 
-public class Event {
+public class Event  implements Serializable{
 
     public String hostName;
     public String eventName;
