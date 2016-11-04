@@ -1,9 +1,7 @@
 package app.lisboa.lisboapp.ui;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -23,7 +21,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessaging;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -32,6 +29,7 @@ import java.util.List;
 import app.lisboa.lisboapp.R;
 import app.lisboa.lisboapp.model.Cache;
 import app.lisboa.lisboapp.model.Event;
+import app.lisboa.lisboapp.utils.PdfIntentOpener;
 
 
 /**
@@ -68,7 +66,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    firebaseUser = task.getResult().getUser();
+                    firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                    assert firebaseUser != null;
                     Cache.storeUserId(MainActivity.this,firebaseUser.getUid());
                     eventAdapter = new EventAdapter(MainActivity.this,R.layout.event_adapter,eventList, firebaseUser);
                     eventListView.setAdapter(eventAdapter);
@@ -121,11 +120,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void goToInfoActivity(View view) {
-        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"lisboa_info.pdf");
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(Uri.fromFile(file), "application/pdf");
-        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        startActivity(intent);
+        PdfIntentOpener.openFile(this, "lisboa_info.pdf");
     }
 
     public void goToHelpActivity(View view) {
