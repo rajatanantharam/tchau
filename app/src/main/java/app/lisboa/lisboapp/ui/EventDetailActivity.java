@@ -53,7 +53,11 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
         // attendees count
 
         int count = event.attendees != null ? event.attendees.size() : 0;
-        String location = "+ " + count + " others at " + event.locationName;
+        String others = "others";
+        if(count== 1) {
+            others = "other";
+        }
+        String location = "+ " + count + " " + others + " at " + event.locationName;
         ((FundaTextView) findViewById(R.id.eventLocationAndPeople)).setText(location);
 
 
@@ -72,6 +76,10 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        if(event.latitude == null || event.longitude == null) {
+            return;
+        }
+
         googleMap.addMarker(new MarkerOptions().position(new LatLng(event.latitude,event.longitude)));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(event.latitude,event.longitude)));
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(17));

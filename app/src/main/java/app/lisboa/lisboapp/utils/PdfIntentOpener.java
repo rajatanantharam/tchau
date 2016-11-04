@@ -23,7 +23,8 @@ public class PdfIntentOpener {
 
         InputStream in;
         OutputStream out;
-        File file = new File(context.getFilesDir(), fileName);
+
+        File file = new File(context.getFilesDir() , fileName);
         try {
             in = assetManager.open(fileName);
             out = context.openFileOutput(file.getName(), Context.MODE_WORLD_READABLE);
@@ -37,7 +38,7 @@ public class PdfIntentOpener {
 
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(
-                Uri.parse("file://" + context.getFilesDir() + fileName),
+                Uri.parse("file://" + context.getFilesDir() + "/" + fileName),
                 "application/pdf");
 
         context.startActivity(intent);

@@ -5,7 +5,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -72,7 +75,7 @@ public class NewEventActivity extends AppCompatActivity {
 
         DatabaseReference eventsRef = FirebaseDatabase.getInstance().getReference().child("events");
         Event event = new Event(host.getText().toString(), eventType.getText().toString(), eventLocationView.getText().toString(), lat, lon,
-                System.currentTimeMillis() / 1000L , Integer.parseInt(duration.getText().toString()), getIntent().getStringExtra("user_id"));
+                System.currentTimeMillis() / 1000L , Integer.parseInt(duration.getText().toString()), getIntent().getStringExtra("user_id"), "pool");
         eventsRef.push().setValue(event);
         Cache.storeEvent(this, event);
         new NotificationBuilder().send(event);
