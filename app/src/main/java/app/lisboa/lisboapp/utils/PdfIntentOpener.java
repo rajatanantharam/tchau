@@ -47,6 +47,7 @@ public class PdfIntentOpener {
         try {
             context.startActivity(intent1);
         } catch (ActivityNotFoundException e) {
+            Toast.makeText(context, "No viewer available to view pdf", Toast.LENGTH_SHORT);
         }
     }
 
