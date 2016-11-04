@@ -39,18 +39,15 @@ public class PdfIntentOpener {
         }
 
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(
-                Uri.parse("file://" + context.getFilesDir() + "/" + fileName),
-                "application/pdf");
-        try
-        {
-            context.startActivity(intent);
+        intent.setDataAndType(Uri.parse("file://" + context.getFilesDir() + "/" + fileName),
+                               "application/pdf");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        Intent intent1 = Intent.createChooser(intent, "Open With");
+        try {
+            context.startActivity(intent1);
+        } catch (ActivityNotFoundException e) {
+            e.printStackTrace();
         }
-        catch (ActivityNotFoundException e)
-        {
-            Toast.makeText(context, "NO Pdf Viewer", Toast.LENGTH_SHORT).show();
-        }
-
     }
 
     private static void copyFile(InputStream in, OutputStream out) throws IOException {
