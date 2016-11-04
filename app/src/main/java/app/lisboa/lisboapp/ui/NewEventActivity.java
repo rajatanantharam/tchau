@@ -20,6 +20,7 @@ import java.util.Date;
 import app.lisboa.lisboapp.R;
 import app.lisboa.lisboapp.model.Cache;
 import app.lisboa.lisboapp.model.Event;
+import app.lisboa.lisboapp.utils.NotificationBuilder;
 
 /**
  * Created by Rajat Anantharam on 01/11/16.
@@ -75,7 +76,8 @@ public class NewEventActivity extends AppCompatActivity {
         Event event = new Event(host.getText().toString(), eventType.getText().toString(), eventLocationView.getText().toString(), lat, lon,
                 new Date().getTime(), Integer.parseInt(duration.getText().toString()), getIntent().getStringExtra("user_id"));
         eventsRef.push().setValue(event);
-        Cache.storeEvent(this,event);
+        Cache.storeEvent(this, event);
+        new NotificationBuilder().send(event);
         finish();
 
     }

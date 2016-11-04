@@ -15,6 +15,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
+        FirebaseMessaging.getInstance().subscribeToTopic("/topics/events");
+
         mFirebaseAuth.signInAnonymously();
         mDatabaseReference = FirebaseDatabase.getInstance().getReference();
         firebaseUser = mFirebaseAuth.getCurrentUser();
