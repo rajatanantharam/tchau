@@ -11,6 +11,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -37,6 +38,5 @@ dependencies {
     compile 'com.getbase:floatingactionbutton:1.10.1'
     compile 'com.google.android.gms:play-services-appindexing:9.6.0'
 }
-
 apply plugin: 'com.google.gms.google-services'
 
