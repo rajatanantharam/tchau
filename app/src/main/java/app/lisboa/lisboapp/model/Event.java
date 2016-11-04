@@ -7,7 +7,7 @@ import java.util.List;
  * Created by Rajat Anantharam on 01/11/16.
  */
 
-public class Event  implements Serializable{
+public class Event  implements Serializable, Comparable<Event> {
 
     public String hostName;
     public String eventName;
@@ -34,4 +34,9 @@ public class Event  implements Serializable{
         this.hostId = hostId;
     }
 
+
+    @Override
+    public int compareTo(Event event) {
+        return this.startTime > event.startTime ? -1 : 1;
+    }
 }

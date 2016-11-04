@@ -22,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
         FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
         mDatabaseReference = FirebaseDatabase.getInstance().getReference();
+
         FirebaseMessaging.getInstance().subscribeToTopic("/topics/events");
 
         mFirebaseAuth.signInAnonymously().addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -77,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Event addedEvent = dataSnapshot.getValue(Event.class);
                 eventList.add(addedEvent);
+                Collections.sort(eventList);
                 eventMap.put(addedEvent, dataSnapshot.getKey());
                 eventAdapter.notifyDataSetChanged();
             }
