@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -12,14 +13,18 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
 import app.lisboa.lisboapp.R;
+import app.lisboa.lisboapp.model.Cache;
 import app.lisboa.lisboapp.model.Event;
 import app.lisboa.lisboapp.utils.FundaTextView;
+import app.lisboa.lisboapp.utils.NotificationBuilder;
 
 /**
  * Created by Rajat Anantharam on 04/11/16.
@@ -75,6 +80,10 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
         ((FundaTextView) findViewById(R.id.eventDuration)).setText(eventDuration);
         ImageView eventEmojiView = (ImageView)findViewById(R.id.eventEmoji);
         eventEmojiView.setImageResource(EmojiMapper.getImageResource(event.emojiName));
+
+        if(Cache.getUserId(this) == null || Cache.getUserId(this).equalsIgnoreCase(event.hostId)) {
+            findViewById(R.id.join).setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -98,5 +107,13 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void joinEvent(View view) {
+        DatabaseReference eventsRef = FirebaseDatabase.getInstance().getReference().child("events");
+        eventsRef.push().setValue(event);
+        Cache.storeEvent(this, event);
+        new NotificationBuilder().send(event);
+        finish();
     }
 }

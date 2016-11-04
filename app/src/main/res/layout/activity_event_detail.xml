@@ -88,9 +88,11 @@
             android:textColor="@color/gray"/>
 
         <Button
+            android:id="@+id/join"
             android:layout_marginTop="50dp"
             android:layout_below="@+id/eventDuration"
-            android:background="@drawable/outline_btn"
+            android:background="@drawable/event_detail_join"
+            android:onClick="joinEvent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
