@@ -5,10 +5,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -31,6 +30,7 @@ public class NewEventActivity extends AppCompatActivity {
     private EditText host, eventType, eventLocationView, duration;
     private static final int PLACE_PICKER_REQUEST = 1;
     private Double lat = 0D, lon = 0D;
+    private String emojiName = "heart";
 
 
     @Override
@@ -75,12 +75,11 @@ public class NewEventActivity extends AppCompatActivity {
 
         DatabaseReference eventsRef = FirebaseDatabase.getInstance().getReference().child("events");
         Event event = new Event(host.getText().toString(), eventType.getText().toString(), eventLocationView.getText().toString(), lat, lon,
-                System.currentTimeMillis() / 1000L , Integer.parseInt(duration.getText().toString()), getIntent().getStringExtra("user_id"));
+                System.currentTimeMillis() / 1000L , Integer.parseInt(duration.getText().toString()), getIntent().getStringExtra("user_id"),emojiName);
         eventsRef.push().setValue(event);
         Cache.storeEvent(this, event);
         new NotificationBuilder().send(event);
         finish();
-
     }
 
     private void prefillViews() {
@@ -111,5 +110,11 @@ public class NewEventActivity extends AppCompatActivity {
     public void pickLocation(View view) throws GooglePlayServicesNotAvailableException, GooglePlayServicesRepairableException {
         PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
         startActivityForResult(builder.build(this), PLACE_PICKER_REQUEST);
+    }
+
+    public void onEmojiClicked(View view) {
+        emojiName = (String) view.getTag();
+        Button submit = (Button)findViewById(R.id.submit);
+        submit.setCompoundDrawablesWithIntrinsicBounds(null,null, ((ImageView)view).getDrawable(), null);
     }
 }

@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 public class Cache {
 
     private static final String EVENT_PREF = "_event_pref_";
+    private static final String USER_ID_PREF = "_userid_pref_";
 
     public static void storeEvent(Context context, Event event) {
 
@@ -48,4 +49,15 @@ public class Cache {
         return event;
     }
 
+    public static String getUserId(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(USER_ID_PREF, Context.MODE_PRIVATE);
+        return sharedPreferences.getString(USER_ID_PREF, null);
+    }
+
+    public static void storeUserId(Context context, String string) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(USER_ID_PREF, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(USER_ID_PREF, string);
+        editor.apply();
+    }
 }

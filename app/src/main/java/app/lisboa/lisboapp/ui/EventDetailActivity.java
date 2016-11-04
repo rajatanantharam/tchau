@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -72,6 +73,8 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
 
         ((FundaTextView) findViewById(R.id.eventTime)).setText(eventTime);
         ((FundaTextView) findViewById(R.id.eventDuration)).setText(eventDuration);
+        ImageView eventEmojiView = (ImageView)findViewById(R.id.eventEmoji);
+        eventEmojiView.setImageResource(EmojiMapper.getImageResource(event.emojiName));
     }
 
     @Override

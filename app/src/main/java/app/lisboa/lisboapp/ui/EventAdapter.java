@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.google.firebase.auth.FirebaseUser;
 
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.TimeZone;
 
 import app.lisboa.lisboapp.R;
+import app.lisboa.lisboapp.model.Cache;
 import app.lisboa.lisboapp.model.Event;
 import app.lisboa.lisboapp.utils.FundaTextView;
 
@@ -66,6 +68,10 @@ public class EventAdapter extends ArrayAdapter<Event> {
                 holder.eventJoinButton.setSelected(false);
             }
 
+            if(Cache.getUserId(mContext) != null && event.hostId.equalsIgnoreCase(Cache.getUserId(mContext))) {
+                holder.eventJoinButton.setVisibility(View.GONE);
+            }
+
             long now = System.currentTimeMillis()/1000L ;
             if(now > (event.startTime + event.durationInMinutes * 60)) {
                 holder.eventParentView.setAlpha(0.3f);
@@ -98,6 +104,7 @@ public class EventAdapter extends ArrayAdapter<Event> {
             holder.eventLocationTextView.setText(location);
             holder.eventTimeTextView.setText(eventTime);
             holder.eventDurationTextView.setText(duration);
+            holder.eventImage.setImageResource(EmojiMapper.getImageResource(event.emojiName));
         }
 
         return convertView;
@@ -106,6 +113,7 @@ public class EventAdapter extends ArrayAdapter<Event> {
     private class UIContainer {
         ViewGroup eventParentView;
         FundaTextView eventNameTextView, eventLocationTextView, eventTimeTextView, eventDurationTextView;
+        ImageView eventImage;
         Button eventJoinButton;
         UIContainer(View convertView) {
             eventParentView = (ViewGroup) convertView.findViewById(R.id.eventView);
@@ -114,6 +122,7 @@ public class EventAdapter extends ArrayAdapter<Event> {
             eventTimeTextView = (FundaTextView) convertView.findViewById(R.id.eventTime);
             eventDurationTextView = (FundaTextView) convertView.findViewById(R.id.eventDuration);
             eventJoinButton = (Button) convertView.findViewById(R.id.joinRoom);
+            eventImage = (ImageView)convertView.findViewById(R.id.eventImage);
         }
     }
 }
