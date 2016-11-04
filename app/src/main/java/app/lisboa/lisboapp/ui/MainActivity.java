@@ -54,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // push notifications
-
         FirebaseMessaging.getInstance().subscribeToTopic("/topics/events");
 
         FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();

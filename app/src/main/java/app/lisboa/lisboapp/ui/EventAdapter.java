@@ -54,7 +54,11 @@ public class EventAdapter extends ArrayAdapter<Event> {
 
             String name = event.eventName + " with " + event.hostName;
             int count = event.attendees!=null ? event.attendees.size() : 0 ;
-            String location = "+ " + count + " others at " + event.locationName;
+            String others = "others";
+            if(count== 1) {
+                others = "other";
+            }
+            String location = "+ " + count + " " + others + " at " + event.locationName;
 
             if(event.attendees!=null && event.attendees.contains(firebaseUser.getUid())) {
                 holder.eventJoinButton.setSelected(true);
@@ -62,6 +66,26 @@ public class EventAdapter extends ArrayAdapter<Event> {
                 holder.eventJoinButton.setSelected(false);
             }
 
+            long now = System.currentTimeMillis()/1000L ;
+            if(now > (event.startTime + event.durationInMinutes * 60)) {
+                holder.eventParentView.setAlpha(0.3f);
+                holder.eventParentView.setClickable(false);
+                holder.eventJoinButton.setClickable(false);
+            } else {
+                holder.eventParentView.setAlpha(1f);
+                holder.eventJoinButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ((MainActivity)mContext).onJoinButtonClicked(event);
+                    }
+                });
+                holder.eventParentView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ((MainActivity)mContext).onListItemClicked(event);
+                    }
+                });
+            }
 
             Date date = new java.util.Date(event.startTime * 1000);
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
@@ -74,18 +98,6 @@ public class EventAdapter extends ArrayAdapter<Event> {
             holder.eventLocationTextView.setText(location);
             holder.eventTimeTextView.setText(eventTime);
             holder.eventDurationTextView.setText(duration);
-            holder.eventJoinButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ((MainActivity)mContext).onJoinButtonClicked(event);
-                }
-            });
-            holder.eventParentView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ((MainActivity)mContext).onListItemClicked(event);
-                }
-            });
         }
 
         return convertView;
