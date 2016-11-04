@@ -72,7 +72,7 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        googleMap.addMarker(new MarkerOptions().position(new LatLng(event.latitude,event.longitude)));//.icon(R.drawable.).anchor(0.51f, 0.6f));
+        googleMap.addMarker(new MarkerOptions().position(new LatLng(event.latitude,event.longitude)));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(event.latitude,event.longitude)));
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(17));
     }
