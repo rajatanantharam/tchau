@@ -39,21 +39,15 @@ public class PdfIntentOpener {
             Log.e("tag", e.getMessage());
         }
 
-        file = new File(Environment.getExternalStorageDirectory().getPath() + "/" + "Lissabon_exportLR.pdf");
-
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(Uri.fromFile(file),"application/pdf");
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        try
-        {
-            context.startActivity(intent);
+        intent.setDataAndType(Uri.parse("file://" + context.getFilesDir() + "/" + fileName),
+                               "application/pdf");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        Intent intent1 = Intent.createChooser(intent, "Open With");
+        try {
+            context.startActivity(intent1);
+        } catch (ActivityNotFoundException e) {
         }
-        catch (ActivityNotFoundException e)
-        {
-            Toast.makeText(context, "NO Pdf Viewer", Toast.LENGTH_SHORT).show();
-        }
-
     }
 
     private static void copyFile(InputStream in, OutputStream out) throws IOException {

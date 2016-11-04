@@ -32,6 +32,7 @@ import java.util.List;
 import app.lisboa.lisboapp.R;
 import app.lisboa.lisboapp.model.Cache;
 import app.lisboa.lisboapp.model.Event;
+import app.lisboa.lisboapp.utils.PdfIntentOpener;
 
 
 /**
@@ -121,11 +122,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void goToInfoActivity(View view) {
-        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"lisboa_info.pdf");
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(Uri.fromFile(file), "application/pdf");
-        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        startActivity(intent);
+        PdfIntentOpener.openFile(this,"lisboa_info.pdf");
     }
 
     public void goToHelpActivity(View view) {
