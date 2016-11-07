@@ -61,6 +61,7 @@ public class NotificationBuilder {
                 JSONObject notificationObj = new JSONObject();
                 notificationObj.put("body",notificationBody);
                 notificationObj.put("sound","tchau");
+                notificationObj.put("icon","tchau");
                 object.put("notification",notificationObj);
                 response = performHttpPost(object.toString());
             } catch (IOException | JSONException e) {
