@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -19,13 +18,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.TimeZone;
 
 import app.lisboa.lisboapp.R;
-import app.lisboa.lisboapp.model.Cache;
 import app.lisboa.lisboapp.model.Event;
 import app.lisboa.lisboapp.utils.FundaTextView;
 import app.lisboa.lisboapp.utils.Utils;
@@ -33,8 +29,7 @@ import app.lisboa.lisboapp.utils.Utils;
 /**
  * Created by Rajat Anantharam on 04/11/16.
  */
-public class EventDetailActivity extends AppCompatActivity implements OnMapReadyCallback
-{
+public class EventDetailActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private Event event;
     private String eventKey;
@@ -68,15 +63,9 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
 
         ((FundaTextView) findViewById(R.id.eventDescription)).setText(event.eventName + " with " + event.hostName);
 
-        if(event.attendees!=null && event.attendees.contains(firebaseUser.getUid())) {
-            findViewById(R.id.join).setVisibility(View.INVISIBLE);
-        } else {
-            findViewById(R.id.join).setVisibility(View.VISIBLE);
-        }            // attendees count
-
         int count = event.attendees != null ? event.attendees.size() : 0;
         String others = "others";
-        if(count== 1) {
+        if (count == 1) {
             others = "other";
         }
         String location = "+ " + count + " " + others + " at " + event.locationName;
@@ -94,22 +83,18 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
 
         ((FundaTextView) findViewById(R.id.eventTime)).setText(eventTime);
         ((FundaTextView) findViewById(R.id.eventDuration)).setText(eventDuration);
-        ImageView eventEmojiView = (ImageView)findViewById(R.id.eventEmoji);
+        ImageView eventEmojiView = (ImageView) findViewById(R.id.eventEmoji);
         eventEmojiView.setImageResource(EmojiMapper.getImageResource(event.emojiName));
-
-        if(Cache.getUserId(this) == null || Cache.getUserId(this).equalsIgnoreCase(event.hostId)) {
-            findViewById(R.id.join).setVisibility(View.INVISIBLE);
-        }
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        if(event.latitude == null || event.longitude == null) {
+        if (event.latitude == null || event.longitude == null) {
             return;
         }
 
-        googleMap.addMarker(new MarkerOptions().position(new LatLng(event.latitude,event.longitude)));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(event.latitude,event.longitude)));
+        googleMap.addMarker(new MarkerOptions().position(new LatLng(event.latitude, event.longitude)));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(event.latitude, event.longitude)));
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(17));
     }
 
@@ -123,25 +108,5 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    public void joinEvent(View view) {
-
-        DatabaseReference childRef = mDatabaseReference.child(Utils.getEventDatabase());
-        DatabaseReference databaseReference = childRef.child(eventKey);
-
-        if(event.attendees == null) {
-            event.attendees = new ArrayList<>();
-        }
-        if(event.attendees.contains(firebaseUser.getUid())) {
-            event.attendees.remove(firebaseUser.getUid());
-        } else {
-            event.attendees.add(firebaseUser.getUid());
-        }
-
-        HashMap<String, Object> update = new HashMap<>();
-        update.put("attendees", event.attendees);
-        databaseReference.updateChildren(update);
-        finish();
     }
 }
