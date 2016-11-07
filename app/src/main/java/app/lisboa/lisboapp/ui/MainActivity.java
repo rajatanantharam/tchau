@@ -39,6 +39,8 @@ import app.lisboa.lisboapp.model.Event;
 import app.lisboa.lisboapp.utils.PdfIntentOpener;
 import app.lisboa.lisboapp.utils.Utils;
 
+import static app.lisboa.lisboapp.utils.Utils.getEventDatabase;
+
 
 /**
  * Created by Rajat Anantharam on 01/11/16.
@@ -70,6 +72,10 @@ public class MainActivity extends AppCompatActivity {
         FirebaseMessaging.getInstance().subscribeToTopic(Utils.getEventTopic());
 
         FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
+
+        eventAdapter = new EventAdapter(MainActivity.this,R.layout.event_adapter,eventList);
+        eventListView.setAdapter(eventAdapter);
+
         mFirebaseAuth.signInAnonymously().addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -77,8 +83,7 @@ public class MainActivity extends AppCompatActivity {
                     firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                     assert firebaseUser != null;
                     Cache.storeUserId(MainActivity.this,firebaseUser.getUid());
-                    eventAdapter = new EventAdapter(MainActivity.this,R.layout.event_adapter,eventList, firebaseUser);
-                    eventListView.setAdapter(eventAdapter);
+                    eventAdapter.notifyDataSetChanged();
                 }
             }
         });
@@ -90,27 +95,40 @@ public class MainActivity extends AppCompatActivity {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
                 Event addedEvent = dataSnapshot.getValue(Event.class);
+                addedEvent.key = dataSnapshot.getKey();
                 if(eventList == null) {
                     eventList = new ArrayList<>();
                 }
                 eventList.add(addedEvent);
                 Collections.sort(eventList);
-
-                if(eventMap == null) {
-                    eventMap = new HashMap<>();
-                }
-                eventMap.put(addedEvent.hostId + addedEvent.startTime, dataSnapshot.getKey());
                 eventAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
+                Event changedEvent = dataSnapshot.getValue(Event.class);
+                changedEvent.key = dataSnapshot.getKey();
+                for(Event event: eventList) {
+                    if(event.key.equalsIgnoreCase(changedEvent.key)) {
+                        eventList.remove(event);
+                        break;
+                    }
+                }
+                eventList.add(changedEvent);
+                Collections.sort(eventList);
+                eventAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-
+                for(Event event: eventList) {
+                    if(event.key.equalsIgnoreCase(dataSnapshot.getKey())) {
+                        eventList.remove(event);
+                        break;
+                    }
+                }
+                Collections.sort(eventList);
+                eventAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -124,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        FirebaseDatabase.getInstance().getReference().child(Utils.getEventDatabase()).addChildEventListener(eventListener);
+        FirebaseDatabase.getInstance().getReference().child(getEventDatabase()).addChildEventListener(eventListener);
     }
 
     public void createEvent(View view) {
@@ -157,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateAttendees(Event event) {
-        DatabaseReference databaseReference = mDatabaseReference.child("events").child(eventMap.get(event.hostId + event.startTime));
+        DatabaseReference databaseReference = mDatabaseReference.child(getEventDatabase()).child(event.key);
 
         if(event.attendees == null) {
             event.attendees = new ArrayList<>();
@@ -171,7 +189,6 @@ public class MainActivity extends AppCompatActivity {
         HashMap<String, Object> update = new HashMap<>();
         update.put("attendees", event.attendees);
         databaseReference.updateChildren(update);
-        eventAdapter.notifyDataSetChanged();
 
         Attendee attendee = new Attendee();
         attendee.name = Cache.getUserName(this);
@@ -196,6 +213,7 @@ public class MainActivity extends AppCompatActivity {
         HashMap<String, Object> updateNames = new HashMap<>();
         updateNames.put("attendeeNames", event.attendeeNames);
         databaseReference.updateChildren(updateNames);
+        eventAdapter.notifyDataSetChanged();
     }
 
     private void showUserDialog(final Event event) {
@@ -223,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
     public void onListItemClicked(Event event) {
         Intent intent = new Intent(MainActivity.this, EventDetailActivity.class);
         intent.putExtra("event",event);
-        intent.putExtra("event_key",eventMap.get(event.hostId + event.startTime));
+        intent.putExtra("event_key",event.key);
         startActivity(intent);
 
     }

@@ -21,6 +21,7 @@ public class Event  implements Serializable, Comparable<Event> {
     public List<String> attendees;
     public String emojiName;
     public List<Attendee> attendeeNames;
+    public String key;
 
     public Event(){
 

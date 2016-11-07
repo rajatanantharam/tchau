@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.TimeZone;
 
 import app.lisboa.lisboapp.R;
+import app.lisboa.lisboapp.model.Attendee;
 import app.lisboa.lisboapp.model.Cache;
 import app.lisboa.lisboapp.model.Event;
 import app.lisboa.lisboapp.utils.FundaTextView;
@@ -28,14 +29,12 @@ public class EventAdapter extends ArrayAdapter<Event> {
 
     private Context mContext;
     private int resourceViewId;
-    private FirebaseUser firebaseUser;
 
 
-    public EventAdapter(Context context, int resource, List<Event> objects, FirebaseUser firebaseUser) {
+    public EventAdapter(Context context, int resource, List<Event> objects) {
         super(context, resource, objects);
         this.mContext = context;
         this.resourceViewId = resource;
-        this.firebaseUser = firebaseUser;
     }
 
     @NonNull
@@ -55,17 +54,20 @@ public class EventAdapter extends ArrayAdapter<Event> {
         if(event!=null) {
 
             String name = event.eventName + " with " + event.hostName;
-            int count = event.attendees!=null ? event.attendees.size() : 0 ;
+            int count = event.attendeeNames!=null ? event.attendeeNames.size() : 0 ;
             String others = "others";
             if(count== 1) {
                 others = "other";
             }
             String location = "+ " + count + " " + others + " at " + event.locationName;
+            holder.eventJoinButton.setSelected(false);
 
-            if(event.attendees!=null && event.attendees.contains(firebaseUser.getUid())) {
-                holder.eventJoinButton.setSelected(true);
-            } else {
-                holder.eventJoinButton.setSelected(false);
+            for(int i = 0; event.attendeeNames !=null && i< event.attendeeNames.size() ; i++) {
+                Attendee user = event.attendeeNames.get(i);
+                if(user.userId.equalsIgnoreCase(Cache.getUserId(mContext))) {
+                    holder.eventJoinButton.setSelected(true);
+                    break;
+                }
             }
 
             if(Cache.getUserId(mContext) != null && event.hostId.equalsIgnoreCase(Cache.getUserId(mContext))) {

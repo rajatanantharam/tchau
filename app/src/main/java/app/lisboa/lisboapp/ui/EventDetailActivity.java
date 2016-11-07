@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.TimeZone;
 
 import app.lisboa.lisboapp.R;
+import app.lisboa.lisboapp.model.Attendee;
 import app.lisboa.lisboapp.model.Event;
 import app.lisboa.lisboapp.utils.FundaTextView;
 import app.lisboa.lisboapp.utils.Utils;
@@ -63,12 +64,21 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
 
         ((FundaTextView) findViewById(R.id.eventDescription)).setText(event.eventName + " with " + event.hostName);
 
-        int count = event.attendees != null ? event.attendees.size() : 0;
-        String others = "others";
-        if (count == 1) {
-            others = "other";
+        int count = event.attendeeNames != null ? event.attendeeNames.size() : 0;
+        String others = "";
+        if (count == 0) {
+            others = "no one :(";
+        } else {
+            for(int i = 0; event.attendeeNames !=null && i< event.attendeeNames.size() ; i++) {
+                Attendee user = event.attendeeNames.get(i);
+                others += user.name;
+                if(i != event.attendeeNames.size() - 1) {
+                    others += ", ";
+                }
+            }
         }
-        String location = "+ " + count + " " + others + " at " + event.locationName;
+
+        String location = " at " + event.locationName + " with " + others ;
         ((FundaTextView) findViewById(R.id.eventLocationAndPeople)).setText(location);
 
 

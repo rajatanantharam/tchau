@@ -7,7 +7,7 @@
     <fragment
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/map"
         tools:context="com.funda.two.view.SearchMapActivity"
         android:name="com.google.android.gms.maps.SupportMapFragment" />
@@ -15,6 +15,7 @@
     <RelativeLayout
         android:background="@android:color/white"
         android:layout_alignParentBottom="true"
+        android:padding="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -38,20 +39,10 @@
             android:layout_height="wrap_content"/>
 
         <app.lisboa.lisboapp.utils.FundaTextView
-            android:layout_below="@+id/eventDescription"
-            android:id="@+id/eventLocationAndPeople"
-            android:layout_toRightOf="@+id/eventEmoji"
-            android:text="+15 other at the mall"
-            android:textSize="14sp"
-            android:textColor="@android:color/black"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <app.lisboa.lisboapp.utils.FundaTextView
             android:layout_toRightOf="@+id/eventEmoji"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/eventLocationAndPeople"
+            android:layout_below="@+id/eventDescription"
             android:layout_marginTop="5dp"
             android:id="@+id/eventTime"
             android:textSize="14sp"
@@ -86,6 +77,17 @@
             android:id="@+id/eventDuration"
             android:textSize="14sp"
             android:textColor="@color/gray"/>
+
+        <app.lisboa.lisboapp.utils.FundaTextView
+            android:layout_below="@+id/eventTime"
+            android:id="@+id/eventLocationAndPeople"
+            android:layout_alignLeft="@+id/eventTime"
+            android:layout_marginTop="5dp"
+            android:text="+15 other at the mall"
+            android:textSize="14sp"
+            android:textColor="@android:color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
     </RelativeLayout>
 
