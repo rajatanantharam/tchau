@@ -3,4 +3,7 @@
     <string name="create_event">Create event</string>
     <string name="from">Van</string>
     <string name="OK">OK</string>
+
+    <string name="whatsurname">What\'s your name?</string>
+    <string name="nameText">Don\'t worry, you only have to do this once :)</string>
 </resources>

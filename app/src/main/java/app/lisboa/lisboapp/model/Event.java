@@ -1,6 +1,7 @@
 package app.lisboa.lisboapp.model;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -19,6 +20,7 @@ public class Event  implements Serializable, Comparable<Event> {
     public String hostId;
     public List<String> attendees;
     public String emojiName;
+    public List<Attendee> attendeeNames;
 
     public Event(){
 

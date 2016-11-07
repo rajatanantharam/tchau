@@ -13,6 +13,7 @@ public class Cache {
 
     private static final String EVENT_PREF = "_event_pref_";
     private static final String USER_ID_PREF = "_userid_pref_";
+    private static final String USER_NAME_PREF = "_user_name_";
 
     public static void storeEvent(Context context, Event event) {
 
@@ -58,6 +59,18 @@ public class Cache {
         SharedPreferences sharedPreferences = context.getSharedPreferences(USER_ID_PREF, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(USER_ID_PREF, string);
+        editor.apply();
+    }
+
+    public static String getUserName(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(USER_NAME_PREF, Context.MODE_PRIVATE);
+        return sharedPreferences.getString(USER_NAME_PREF, null);
+    }
+
+    public static void storeUserName(Context context, String name) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(USER_NAME_PREF, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(USER_NAME_PREF, name);
         editor.apply();
     }
 }

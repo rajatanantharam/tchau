@@ -1,11 +1,17 @@
 package app.lisboa.lisboapp.ui;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -27,6 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import app.lisboa.lisboapp.R;
+import app.lisboa.lisboapp.model.Attendee;
 import app.lisboa.lisboapp.model.Cache;
 import app.lisboa.lisboapp.model.Event;
 import app.lisboa.lisboapp.utils.PdfIntentOpener;
@@ -43,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
     private DatabaseReference mDatabaseReference;
     private FirebaseUser firebaseUser;
-    private HashMap<Event, String > eventMap;
+    private HashMap<String, String > eventMap;
     private EventAdapter eventAdapter;
 
     @Override
@@ -88,7 +95,11 @@ public class MainActivity extends AppCompatActivity {
                 }
                 eventList.add(addedEvent);
                 Collections.sort(eventList);
-                eventMap.put(addedEvent, dataSnapshot.getKey());
+
+                if(eventMap == null) {
+                    eventMap = new HashMap<>();
+                }
+                eventMap.put(addedEvent.hostId + addedEvent.startTime, dataSnapshot.getKey());
                 eventAdapter.notifyDataSetChanged();
             }
 
@@ -138,7 +149,15 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        DatabaseReference databaseReference = mDatabaseReference.child(Utils.getEventDatabase()).child(eventMap.get(event));
+        if(Cache.getUserName(this) == null) {
+            showUserDialog(event);
+        } else {
+            updateAttendees(event);
+        }
+    }
+
+    private void updateAttendees(Event event) {
+        DatabaseReference databaseReference = mDatabaseReference.child("events").child(eventMap.get(event.hostId + event.startTime));
 
         if(event.attendees == null) {
             event.attendees = new ArrayList<>();
@@ -153,12 +172,58 @@ public class MainActivity extends AppCompatActivity {
         update.put("attendees", event.attendees);
         databaseReference.updateChildren(update);
         eventAdapter.notifyDataSetChanged();
+
+        Attendee attendee = new Attendee();
+        attendee.name = Cache.getUserName(this);
+        attendee.userId = Cache.getUserId(this);
+        if(event.attendeeNames == null) {
+            event.attendeeNames = new ArrayList<>();
+        }
+
+        int i = 0, len = event.attendeeNames.size();
+        for(i = 0; event.attendeeNames!=null && i< event.attendeeNames.size() ; i++) {
+            Attendee user = event.attendeeNames.get(i);
+            if(user.userId.equalsIgnoreCase(attendee.userId)) {
+                event.attendeeNames.remove(user);
+                break;
+            }
+        }
+
+        if(i >= len) {
+            event.attendeeNames.add(attendee);
+        }
+
+        HashMap<String, Object> updateNames = new HashMap<>();
+        updateNames.put("attendeeNames", event.attendeeNames);
+        databaseReference.updateChildren(updateNames);
+    }
+
+    private void showUserDialog(final Event event) {
+        final AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+        alertDialog.setTitle(R.string.whatsurname);
+        View viewInflated = LayoutInflater.from(this).inflate(R.layout.input_username, null);
+        final EditText input = (EditText) viewInflated.findViewById(R.id.name);
+        Button clickedOK = (Button) viewInflated.findViewById(R.id.clickedOK);
+        alertDialog.setView(viewInflated);
+
+        clickedOK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String userName = input.getText().toString();
+                Cache.storeUserName(MainActivity.this, userName);
+                updateAttendees(event);
+                alertDialog.dismiss();
+            }
+        });
+
+        alertDialog.show();
+
     }
 
     public void onListItemClicked(Event event) {
         Intent intent = new Intent(MainActivity.this, EventDetailActivity.class);
         intent.putExtra("event",event);
-        intent.putExtra("event_key",eventMap.get(event));
+        intent.putExtra("event_key",eventMap.get(event.hostId + event.startTime));
         startActivity(intent);
 
     }
