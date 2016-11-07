@@ -21,6 +21,7 @@ import app.lisboa.lisboapp.R;
 import app.lisboa.lisboapp.model.Cache;
 import app.lisboa.lisboapp.model.Event;
 import app.lisboa.lisboapp.utils.NotificationBuilder;
+import app.lisboa.lisboapp.utils.Utils;
 
 /**
  * Created by Rajat Anantharam on 01/11/16.
@@ -73,7 +74,7 @@ public class NewEventActivity extends AppCompatActivity {
             return;
         }
 
-        DatabaseReference eventsRef = FirebaseDatabase.getInstance().getReference().child("events");
+        DatabaseReference eventsRef = FirebaseDatabase.getInstance().getReference().child(Utils.getEventDatabase());
         Event event = new Event(host.getText().toString(), eventType.getText().toString(), eventLocationView.getText().toString(), lat, lon,
                 System.currentTimeMillis() / 1000L , Integer.parseInt(duration.getText().toString()), getIntent().getStringExtra("user_id"),emojiName);
         eventsRef.push().setValue(event);

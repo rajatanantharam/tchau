@@ -28,6 +28,7 @@ import app.lisboa.lisboapp.R;
 import app.lisboa.lisboapp.model.Cache;
 import app.lisboa.lisboapp.model.Event;
 import app.lisboa.lisboapp.utils.FundaTextView;
+import app.lisboa.lisboapp.utils.Utils;
 
 /**
  * Created by Rajat Anantharam on 04/11/16.
@@ -126,7 +127,7 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
 
     public void joinEvent(View view) {
 
-        DatabaseReference childRef = mDatabaseReference.child("events");
+        DatabaseReference childRef = mDatabaseReference.child(Utils.getEventDatabase());
         DatabaseReference databaseReference = childRef.child(eventKey);
 
         if(event.attendees == null) {
