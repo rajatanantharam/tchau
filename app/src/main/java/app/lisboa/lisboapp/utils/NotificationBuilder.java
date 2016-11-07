@@ -56,7 +56,7 @@ public class NotificationBuilder {
             try {
 
                 JSONObject object = new JSONObject();
-                object.put("to","/topics/events");
+                object.put("to",Utils.getEventTopic());
                 object.put("priority","high");
                 JSONObject notificationObj = new JSONObject();
                 notificationObj.put("body",notificationBody);

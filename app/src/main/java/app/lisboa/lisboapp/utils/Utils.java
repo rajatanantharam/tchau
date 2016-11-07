@@ -2,6 +2,8 @@ package app.lisboa.lisboapp.utils;
 
 import android.graphics.Typeface;
 
+import app.lisboa.lisboapp.BuildConfig;
+
 /**
  * Created by anjali on 03/11/16.
  */
@@ -23,5 +25,14 @@ public class Utils {
             fontFamily = "proximanova-regular.otf";
         }
         return fontFamily;
+    }
+
+    public static String getEventTopic() {
+        if (BuildConfig.DEBUG) {
+            return "/topics/events-dev";
+        }
+        else {
+            return "/topics/events";
+        }
     }
 }

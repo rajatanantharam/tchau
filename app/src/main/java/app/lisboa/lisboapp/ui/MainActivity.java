@@ -30,6 +30,7 @@ import app.lisboa.lisboapp.R;
 import app.lisboa.lisboapp.model.Cache;
 import app.lisboa.lisboapp.model.Event;
 import app.lisboa.lisboapp.utils.PdfIntentOpener;
+import app.lisboa.lisboapp.utils.Utils;
 
 
 /**
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // push notifications
-        FirebaseMessaging.getInstance().subscribeToTopic("/topics/events");
+        FirebaseMessaging.getInstance().subscribeToTopic(Utils.getEventTopic());
 
         FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseAuth.signInAnonymously().addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
