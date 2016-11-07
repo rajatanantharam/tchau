@@ -24,6 +24,7 @@ import java.util.TimeZone;
 import app.lisboa.lisboapp.R;
 import app.lisboa.lisboapp.model.Event;
 import app.lisboa.lisboapp.utils.FundaTextView;
+import app.lisboa.lisboapp.utils.Utils;
 
 /**
  * Created by Rajat Anantharam on 04/11/16.

@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        FirebaseDatabase.getInstance().getReference().child("events").addChildEventListener(eventListener);
+        FirebaseDatabase.getInstance().getReference().child(Utils.getEventDatabase()).addChildEventListener(eventListener);
     }
 
     public void createEvent(View view) {
@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        DatabaseReference databaseReference = mDatabaseReference.child("events").child(eventMap.get(event));
+        DatabaseReference databaseReference = mDatabaseReference.child(Utils.getEventDatabase()).child(eventMap.get(event));
 
         if(event.attendees == null) {
             event.attendees = new ArrayList<>();

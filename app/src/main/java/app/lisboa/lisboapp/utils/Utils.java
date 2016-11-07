@@ -35,4 +35,13 @@ public class Utils {
             return "/topics/events";
         }
     }
+
+    public static String getEventDatabase() {
+        if (BuildConfig.DEBUG) {
+            return "eventsDev";
+        }
+        else {
+            return "events";
+        }
+    }
 }
