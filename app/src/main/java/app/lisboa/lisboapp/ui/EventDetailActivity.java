@@ -36,17 +36,23 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
 {
 
     private Event event;
-    private HashMap<Event,String> eventMap;
+    private String eventKey;
+    private DatabaseReference mDatabaseReference;
+    private FirebaseUser firebaseUser;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_detail);
+        this.event = (Event) getIntent().getSerializableExtra("event");
+        this.eventKey = getIntent().getStringExtra("event_key");
+
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference();
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        this.event = (Event) getIntent().getSerializableExtra("event");
-        this.eventMap = (HashMap<Event, String>)getIntent().getSerializableExtra("eventMap");
 
         prefillViews();
 
@@ -61,7 +67,11 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
 
         ((FundaTextView) findViewById(R.id.eventDescription)).setText(event.eventName + " with " + event.hostName);
 
-        // attendees count
+        if(event.attendees!=null && event.attendees.contains(firebaseUser.getUid())) {
+            findViewById(R.id.join).setVisibility(View.INVISIBLE);
+        } else {
+            findViewById(R.id.join).setVisibility(View.VISIBLE);
+        }            // attendees count
 
         int count = event.attendees != null ? event.attendees.size() : 0;
         String others = "others";
@@ -115,12 +125,13 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
     }
 
     public void joinEvent(View view) {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("events").child(eventMap.get(event));
+
+        DatabaseReference childRef = mDatabaseReference.child("events");
+        DatabaseReference databaseReference = childRef.child(eventKey);
+
         if(event.attendees == null) {
             event.attendees = new ArrayList<>();
         }
-
-        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         if(event.attendees.contains(firebaseUser.getUid())) {
             event.attendees.remove(firebaseUser.getUid());
         } else {

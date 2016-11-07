@@ -87,9 +87,6 @@ public class MainActivity extends AppCompatActivity {
                 }
                 eventList.add(addedEvent);
                 Collections.sort(eventList);
-                if(eventMap == null) {
-                    eventMap = new HashMap<>();
-                }
                 eventMap.put(addedEvent, dataSnapshot.getKey());
                 eventAdapter.notifyDataSetChanged();
             }
@@ -160,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
     public void onListItemClicked(Event event) {
         Intent intent = new Intent(MainActivity.this, EventDetailActivity.class);
         intent.putExtra("event",event);
-        intent.putExtra("eventMap",eventMap);
+        intent.putExtra("event_key",eventMap.get(event));
         startActivity(intent);
 
     }
