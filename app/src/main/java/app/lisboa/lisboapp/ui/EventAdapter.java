@@ -70,6 +70,8 @@ public class EventAdapter extends ArrayAdapter<Event> {
 
             if(Cache.getUserId(mContext) != null && event.hostId.equalsIgnoreCase(Cache.getUserId(mContext))) {
                 holder.eventJoinButton.setVisibility(View.GONE);
+            } else {
+                holder.eventJoinButton.setVisibility(View.VISIBLE);
             }
 
             long now = System.currentTimeMillis()/1000L ;

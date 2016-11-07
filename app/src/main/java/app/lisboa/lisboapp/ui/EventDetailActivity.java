@@ -13,18 +13,21 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.TimeZone;
 
 import app.lisboa.lisboapp.R;
 import app.lisboa.lisboapp.model.Cache;
 import app.lisboa.lisboapp.model.Event;
 import app.lisboa.lisboapp.utils.FundaTextView;
-import app.lisboa.lisboapp.utils.NotificationBuilder;
 
 /**
  * Created by Rajat Anantharam on 04/11/16.
@@ -33,6 +36,7 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
 {
 
     private Event event;
+    private HashMap<Event,String> eventMap;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,6 +46,7 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         this.event = (Event) getIntent().getSerializableExtra("event");
+        this.eventMap = (HashMap<Event, String>)getIntent().getSerializableExtra("eventMap");
 
         prefillViews();
 
@@ -110,10 +115,21 @@ public class EventDetailActivity extends AppCompatActivity implements OnMapReady
     }
 
     public void joinEvent(View view) {
-        DatabaseReference eventsRef = FirebaseDatabase.getInstance().getReference().child("events");
-        eventsRef.push().setValue(event);
-        Cache.storeEvent(this, event);
-        new NotificationBuilder().send(event);
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("events").child(eventMap.get(event));
+        if(event.attendees == null) {
+            event.attendees = new ArrayList<>();
+        }
+
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if(event.attendees.contains(firebaseUser.getUid())) {
+            event.attendees.remove(firebaseUser.getUid());
+        } else {
+            event.attendees.add(firebaseUser.getUid());
+        }
+
+        HashMap<String, Object> update = new HashMap<>();
+        update.put("attendees", event.attendees);
+        databaseReference.updateChildren(update);
         finish();
     }
 }

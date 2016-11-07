@@ -82,8 +82,14 @@ public class MainActivity extends AppCompatActivity {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
                 Event addedEvent = dataSnapshot.getValue(Event.class);
+                if(eventList == null) {
+                    eventList = new ArrayList<>();
+                }
                 eventList.add(addedEvent);
                 Collections.sort(eventList);
+                if(eventMap == null) {
+                    eventMap = new HashMap<>();
+                }
                 eventMap.put(addedEvent, dataSnapshot.getKey());
                 eventAdapter.notifyDataSetChanged();
             }
@@ -154,6 +160,7 @@ public class MainActivity extends AppCompatActivity {
     public void onListItemClicked(Event event) {
         Intent intent = new Intent(MainActivity.this, EventDetailActivity.class);
         intent.putExtra("event",event);
+        intent.putExtra("eventMap",eventMap);
         startActivity(intent);
 
     }
