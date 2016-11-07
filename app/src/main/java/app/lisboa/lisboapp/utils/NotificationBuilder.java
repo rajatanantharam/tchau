@@ -25,7 +25,7 @@ public class NotificationBuilder {
     private String notificationBody;
 
     public void send(Event event) {
-        notificationBody = "Uh oh! Looks like " + event.hostName + " is up to something at " + event.locationName;
+        notificationBody = "Uh oh! Looks like " + event.hostName + " is up to something at " + event.locationName + " \uD83D\uDE0E";
         new PostNotificationTask().execute("");
 
     }
