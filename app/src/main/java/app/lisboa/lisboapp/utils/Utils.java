@@ -29,7 +29,7 @@ public class Utils {
 
     public static String getEventTopic() {
         if (BuildConfig.DEBUG) {
-            return "/topics/events-dev";
+            return "/topics/events";
         }
         else {
             return "/topics/events";
@@ -38,7 +38,7 @@ public class Utils {
 
     public static String getEventDatabase() {
         if (BuildConfig.DEBUG) {
-            return "eventsDev";
+            return "events";
         }
         else {
             return "events";

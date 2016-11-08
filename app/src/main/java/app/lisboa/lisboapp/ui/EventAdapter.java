@@ -9,8 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import com.google.firebase.auth.FirebaseUser;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -79,8 +77,8 @@ public class EventAdapter extends ArrayAdapter<Event> {
             long now = System.currentTimeMillis()/1000L ;
             if(now > (event.startTime + event.durationInMinutes * 60)) {
                 holder.eventParentView.setAlpha(0.3f);
-                holder.eventParentView.setClickable(false);
-                holder.eventJoinButton.setClickable(false);
+//                holder.eventParentView.setClickable(false);
+//                holder.eventJoinButton.setClickable(false);
             } else {
                 holder.eventParentView.setAlpha(1f);
                 holder.eventJoinButton.setOnClickListener(new View.OnClickListener() {
@@ -95,7 +93,16 @@ public class EventAdapter extends ArrayAdapter<Event> {
                         ((MainActivity)mContext).onListItemClicked(event);
                     }
                 });
+
             }
+
+            holder.eventParentView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    ((MainActivity)mContext).onListLongClicked(event);
+                    return true;
+                }
+            });
 
             Date date = new java.util.Date(event.startTime * 1000);
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");

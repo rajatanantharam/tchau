@@ -1,6 +1,5 @@
 package app.lisboa.lisboapp.ui;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,7 +8,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -75,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
 
         eventAdapter = new EventAdapter(MainActivity.this,R.layout.event_adapter,eventList);
         eventListView.setAdapter(eventAdapter);
-
         mFirebaseAuth.signInAnonymously().addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -243,6 +240,23 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("event",event);
         intent.putExtra("event_key",event.key);
         startActivity(intent);
+
+    }
+
+    public void onListLongClicked(final Event event) {
+        final AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+        View viewInflated = LayoutInflater.from(MainActivity.this).inflate(R.layout.delete_event, null);
+        Button clickedOK = (Button) viewInflated.findViewById(R.id.clickedOK);
+        alertDialog.setView(viewInflated);
+        clickedOK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseDatabase.getInstance().getReference().child(Utils.getEventDatabase()).child(event.key).removeValue();
+                alertDialog.dismiss();
+            }
+        });
+
+        alertDialog.show();
 
     }
 }

@@ -12,10 +12,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -25,7 +21,6 @@ import app.lisboa.lisboapp.R;
 import app.lisboa.lisboapp.model.Attendee;
 import app.lisboa.lisboapp.model.Event;
 import app.lisboa.lisboapp.utils.FundaTextView;
-import app.lisboa.lisboapp.utils.Utils;
 
 /**
  * Created by Rajat Anantharam on 04/11/16.
@@ -33,19 +28,12 @@ import app.lisboa.lisboapp.utils.Utils;
 public class EventDetailActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private Event event;
-    private String eventKey;
-    private DatabaseReference mDatabaseReference;
-    private FirebaseUser firebaseUser;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_detail);
         this.event = (Event) getIntent().getSerializableExtra("event");
-        this.eventKey = getIntent().getStringExtra("event_key");
-
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference();
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
