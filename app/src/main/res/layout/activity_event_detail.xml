@@ -83,7 +83,7 @@
             android:id="@+id/eventLocationAndPeople"
             android:layout_alignLeft="@+id/eventTime"
             android:layout_marginTop="5dp"
-            android:text="+15 other at the mall"
+            android:text="+15 other at the mall with rajat, rajat, rajat, rajat, rajat, rajat, rajat, rajat, rajat, rajat, rajat, rajat, rajat, rajat, rajat, rajat, rajat, rajat, rajat, rajat, rajat, "
             android:textSize="14sp"
             android:textColor="@android:color/black"
             android:layout_width="match_parent"

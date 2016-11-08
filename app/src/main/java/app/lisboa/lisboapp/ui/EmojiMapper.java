@@ -7,7 +7,12 @@ import app.lisboa.lisboapp.R;
  */
 public class EmojiMapper {
 
-    public static int getImageResource(String emojiName) {
+    static int getImageResource(String emojiName) {
+
+        if(emojiName == null || emojiName.length() == 0) {
+            return R.drawable.fun;
+        }
+
         switch (emojiName) {
             case "pool":
                 return R.drawable.pool;
@@ -35,8 +40,8 @@ public class EmojiMapper {
                 return R.drawable.heart;
             case "adventure":
                 return R.drawable.adventure;
-
+            default:
+                return R.drawable.heart;
         }
-        return R.drawable.heart;
     }
 }
