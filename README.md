@@ -1,5 +1,5 @@
 # lisboapp
-An event broadcasting app powered by [firebase](firebase.google.com) created with love during [websummit 2016](https://websummit.com/)
+An event broadcasting app powered by [firebase](https://firebase.google.com) created with love during [websummit 2016](https://websummit.com/)
 
 With lisboapp one can plan an event and broadcast it to everyone who's subscribed with the app. Additionally interested subscribers can join the event. Every event is has a location & duration. 
 
