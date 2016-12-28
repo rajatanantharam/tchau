@@ -1,42 +1,260 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:background="@drawable/bg_createevent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-
-    <EditText
+    <LinearLayout
+        android:id="@+id/inputLayout"
+        android:layout_marginTop="60dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="text"
-        android:hint="Host name"
-        android:id="@+id/hostName"/>
+        android:layout_height="wrap_content">
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="text"
-        android:hint="Event name"
-        android:id="@+id/eventName"/>
+        <LinearLayout
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="text"
-        android:hint="Location"
-        android:id="@+id/location"/>
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="text"
-        android:hint="Duration"
-        android:id="@+id/duration"/>
+            <TextView
+                android:textColor="@android:color/white"
+                android:text="As"
+                android:paddingRight="10dp"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
+            <EditText
+                android:inputType="textCapWords"
+                android:textColor="@android:color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/host"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textColor="@android:color/white"
+                android:text="I'm going for"
+                android:paddingRight="10dp"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <EditText
+                android:inputType="textCapWords"
+                android:textColor="@android:color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/eventType"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textColor="@android:color/white"
+                android:text="at"
+                android:paddingRight="10dp"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <EditText
+                android:inputType="textCapWords"
+                android:paddingRight="20dp"
+                android:textColor="@android:color/white"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/eventLocation"/>
+
+            <Button
+                android:drawableTop="@drawable/hourglass"
+                android:onClick="pickLocation"
+                android:layout_gravity="center_vertical"
+                android:layout_width="40dp"
+                android:layout_height="35dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textColor="@android:color/white"
+                android:text="for about"
+                android:paddingRight="10dp"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <EditText
+                android:paddingRight="10dp"
+                android:textColor="@android:color/white"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/duration"
+                android:inputType="phone"/>
+
+            <TextView
+                android:textColor="@android:color/white"
+                android:text="minutes"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="40dp"
+        android:layout_below="@+id/inputLayout"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:padding="5dp"
+                android:src="@drawable/adventure"
+                android:tag="adventure"
+                android:onClick="onEmojiClicked"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <ImageView
+                android:padding="5dp"
+                android:src="@drawable/snack"
+                android:tag="snack"
+                android:onClick="onEmojiClicked"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <ImageView
+                android:padding="5dp"
+                android:src="@drawable/cocktail"
+                android:tag="cocktail"
+                android:onClick="onEmojiClicked"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <ImageView
+                android:padding="5dp"
+                android:src="@drawable/glasses"
+                android:tag="glasses"                android:onClick="onEmojiClicked"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <ImageView
+                android:tag="coffee"
+                android:padding="5dp"
+                android:onClick="onEmojiClicked"
+
+                android:src="@drawable/coffee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <ImageView
+                android:padding="5dp"
+                android:tag="breakfast"
+                android:src="@drawable/breakfast"
+                android:onClick="onEmojiClicked"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:padding="5dp"
+                android:tag="pasta"
+                android:src="@drawable/pasta"
+                android:onClick="onEmojiClicked"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <ImageView
+                android:padding="5dp"
+                android:src="@drawable/wine"
+                android:tag="wine"
+                android:onClick="onEmojiClicked"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <ImageView
+                android:padding="5dp"
+                android:src="@drawable/beer"
+                android:onClick="onEmojiClicked"
+
+                android:tag="beer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <ImageView
+                android:padding="5dp"
+                android:onClick="onEmojiClicked"
+
+                android:src="@drawable/pool"
+                android:tag="pool"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <ImageView
+                android:padding="5dp"
+                android:onClick="onEmojiClicked"
+
+                android:src="@drawable/sushi"
+                android:tag="sushi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <ImageView
+                android:padding="5dp"
+                android:onClick="onEmojiClicked"
+                android:src="@drawable/fun"
+                android:tag="fun"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
     <Button
+        android:layout_margin="60dp"
+        android:textColor="@android:color/white"
+        android:background="#311a62"
+        android:layout_alignParentBottom="true"
         android:id="@+id/submit"
-        android:text="@string/OK"
+        android:paddingRight="10dp"
+        android:drawableEnd="@drawable/heart"
+        android:textAllCaps="false"
+        android:text="Invite your colleagues"
         android:onClick="broadCastEvent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-</LinearLayout>
+</RelativeLayout>
